@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "@/lib/types";
 import { useTelegram } from "./useTelegram";
 
@@ -8,12 +8,17 @@ export function useUser(): User | null {
   const telegram = useTelegram();
   const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const hasAuthenticated = useRef(false);
 
   useEffect(() => {
     if (!telegram.isInsideTelegram || !telegram.initData) {
       setSupabaseUser(null);
       return;
     }
+
+    // Prevent re-authentication on re-renders
+    if (hasAuthenticated.current) return;
+    hasAuthenticated.current = true;
 
     let cancelled = false;
 
