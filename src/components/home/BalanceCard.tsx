@@ -25,7 +25,7 @@ export function BalanceCard({ balance }: BalanceCardProps) {
         </div>
         <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-white/40">
           <TrendingUp className="h-3.5 w-3.5 text-brand-400" />
-          <span>Earn more by completing activities</span>
+          <span>Earn more by completing activities 🚀</span>
         </div>
       </div>
     </Card>

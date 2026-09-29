@@ -15,7 +15,7 @@ interface ProfileSectionProps {
 export function ProfileSection({ user }: ProfileSectionProps) {
   return (
     <div className="animate-fade-in">
-      <PageHeader title="Profile" />
+      <PageHeader title="👤 Profile" />
 
       <div className="space-y-4 px-4 pb-4">
         <ProfileHeader user={user} />

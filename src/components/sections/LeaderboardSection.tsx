@@ -16,7 +16,7 @@ export function LeaderboardSection({ user }: LeaderboardSectionProps) {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="Leaderboard"
+        title="🏆 Leaderboard"
         subtitle="Top earners this month"
       />
 

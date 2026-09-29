@@ -18,7 +18,7 @@ export function StreakIndicator({ streak, className }: StreakIndicatorProps) {
     >
       <Flame className="h-3.5 w-3.5 text-gold-400" strokeWidth={2.5} />
       <span className="text-[10px] font-black uppercase tracking-wider text-gold-400">
-        {streak} day streak
+        {streak} day streak 🔥
       </span>
     </div>
   );
