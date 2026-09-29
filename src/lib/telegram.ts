@@ -8,6 +8,12 @@ import type { TelegramContext, TelegramTheme, TelegramUser } from "./types";
  *
  * The Telegram script is loaded in the root layout.
  * See: https://core.telegram.org/bots/webapps
+ *
+ * SECURITY NOTE:
+ * The initData string is stored for future server-side verification.
+ * Never trust client-side user data for authentication.
+ * Always verify initData on your backend before granting access.
+ * See: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
  */
 
 declare global {
@@ -55,6 +61,12 @@ export function getTelegramUser(): TelegramUser | null {
   return window.Telegram?.WebApp?.initDataUnsafe?.user ?? null;
 }
 
+/** Get the raw initData string for future server-side verification */
+export function getTelegramInitData(): string {
+  if (typeof window === "undefined") return "";
+  return window.Telegram?.WebApp?.initData ?? "";
+}
+
 /** Get the current Telegram color scheme */
 export function getTelegramTheme(): TelegramTheme {
   if (typeof window === "undefined") return "dark";
@@ -83,6 +95,7 @@ export function getTelegramContext(): TelegramContext {
     theme: getTelegramTheme(),
     isInsideTelegram: inside,
     colorScheme: getTelegramTheme(),
+    initData: getTelegramInitData(),
     hapticFeedback: tg
       ? {
           impact: (style) => tg.HapticFeedback?.impactOccurred(style),
@@ -113,6 +126,6 @@ export function initTelegram(): void {
 
   // Set header and background colors to match the app theme
   const isDark = tg.colorScheme === "dark";
-  tg.setHeaderColor(isDark ? "#0B0F14" : "#F8FAFC");
-  tg.setBackgroundColor(isDark ? "#0B0F14" : "#F8FAFC");
+  tg.setHeaderColor(isDark ? "#0A0A0A" : "#F8FAFC");
+  tg.setBackgroundColor(isDark ? "#0A0A0A" : "#F8FAFC");
 }

@@ -13,6 +13,8 @@ export interface User {
   firstName: string;
   lastName?: string;
   username?: string;
+  /** Profile photo URL from Telegram (if available) */
+  photoUrl?: string;
   /** Current balance in BRL (display only — never modified client-side) */
   balance: number;
   /** Current daily login streak in days */
@@ -77,12 +79,20 @@ export interface Transaction {
 
 // ─── Telegram ────────────────────────────────────────────────────────────────
 
+/**
+ * Telegram user data from initDataUnsafe.user
+ * See: https://core.telegram.org/bots/webapps#webappuser
+ */
 export interface TelegramUser {
   id: number;
   first_name: string;
   last_name?: string;
   username?: string;
+  /** URL of the user's profile photo (may not be available in all contexts) */
+  photo_url?: string;
   language_code?: string;
+  /** Whether the user is a Telegram Premium user */
+  is_premium?: boolean;
 }
 
 export type TelegramTheme = "light" | "dark";
@@ -92,6 +102,13 @@ export interface TelegramContext {
   theme: TelegramTheme;
   isInsideTelegram: boolean;
   colorScheme: TelegramTheme;
+  /**
+   * Raw Telegram initData string.
+   * SECURITY: This must be verified server-side before being trusted.
+   * Do NOT use this for authentication without backend verification.
+   * See: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+   */
+  initData: string;
   hapticFeedback: {
     impact: (style: "light" | "medium" | "heavy" | "rigid" | "soft") => void;
     notification: (type: "error" | "success" | "warning") => void;

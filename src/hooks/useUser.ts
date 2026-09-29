@@ -13,6 +13,9 @@ import { useTelegram } from "./useTelegram";
  *
  * TODO: Replace mock fallback with Supabase user fetch when backend is ready.
  * The eventual flow: Telegram user ID → backend verification → Supabase lookup
+ *
+ * SECURITY: Telegram user data is NOT trusted for authentication.
+ * The initData string must be verified server-side before granting access.
  */
 export function useUser(): User {
   const telegram = useTelegram();
@@ -24,6 +27,7 @@ export function useUser(): User {
         firstName: telegram.user.first_name,
         lastName: telegram.user.last_name,
         username: telegram.user.username,
+        photoUrl: telegram.user.photo_url,
         // TODO: Fetch real balance from Supabase via backend
         balance: mockUser.balance,
         streak: mockUser.streak,

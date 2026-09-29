@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileStat } from "@/components/profile/ProfileStat";
 import { ComingSoonCard } from "@/components/profile/ComingSoonCard";
+import { TelegramDevIndicator } from "@/components/shared/TelegramDevIndicator";
 import { formatBRL, formatDate } from "@/lib/utils";
 import type { User } from "@/lib/types";
 
@@ -19,6 +20,9 @@ export function ProfileSection({ user }: ProfileSectionProps) {
 
       <div className="space-y-4 px-4 pb-4">
         <ProfileHeader user={user} />
+
+        {/* Dev-only: Telegram user detection indicator */}
+        <TelegramDevIndicator />
 
         <div className="grid grid-cols-3 gap-2.5">
           <ProfileStat
