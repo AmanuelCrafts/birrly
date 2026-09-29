@@ -8,7 +8,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { cn, formatBRL } from "@/lib/utils";
+import { cn, formatBirr } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { ComingSoon } from "@/components/shared/ComingSoon";
 import type { Task } from "@/lib/types";
@@ -75,9 +75,9 @@ export function EarnTaskCard({ task, onTaskClick, className }: EarnTaskCardProps
 
         <div className="shrink-0 text-right">
           <span className="text-sm font-black text-brand-400">
-            +{formatBRL(task.reward)}
+            +{formatBirr(task.reward)}
           </span>
-          <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">BRL</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">Birr</p>
         </div>
       </div>
     </Card>

@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Format a number as BRL balance with thousands separator */
-export function formatBRL(amount: number): string {
+/** Format a number as Birr balance with thousands separator */
+export function formatBirr(amount: number): string {
   return new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,

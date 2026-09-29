@@ -13,7 +13,7 @@ export function EarnSection({ onTaskClick }: EarnSectionProps) {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="Earn BRL"
+        title="Earn Birr"
         subtitle="Complete activities and grow your balance."
       />
 

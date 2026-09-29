@@ -38,7 +38,7 @@ export function HomeSection({ user, onEarnClick, onTaskClick }: HomeSectionProps
           className="shrink-0"
         >
           <Coins className="h-3.5 w-3.5" strokeWidth={2.5} />
-          Earn BRL
+          Earn Birr
         </Button>
       </div>
 

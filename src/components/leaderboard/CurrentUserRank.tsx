@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, formatBRL } from "@/lib/utils";
+import { cn, formatBirr } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { UserAvatar } from "@/components/shared/UserAvatar";
 import type { User } from "@/lib/types";
@@ -42,9 +42,9 @@ export function CurrentUserRank({ user, rank, className }: CurrentUserRankProps)
 
         <div className="shrink-0 text-right">
           <span className="text-xs font-black text-white">
-            {formatBRL(user.balance)}
+            {formatBirr(user.balance)}
           </span>
-          <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">BRL</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">Birr</p>
         </div>
       </div>
     </Card>

@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { formatBRL } from "@/lib/utils";
+import { formatBirr } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
 interface BalanceCardProps {
@@ -19,9 +19,9 @@ export function BalanceCard({ balance }: BalanceCardProps) {
         </p>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-4xl font-black tracking-tight text-white">
-            {formatBRL(balance)}
+            {formatBirr(balance)}
           </span>
-          <span className="text-lg font-black text-brand-400">BRL</span>
+          <span className="text-lg font-black text-brand-400">Birr</span>
         </div>
         <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-white/40">
           <TrendingUp className="h-3.5 w-3.5 text-brand-400" />

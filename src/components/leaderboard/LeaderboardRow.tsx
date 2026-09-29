@@ -1,7 +1,7 @@
 "use client";
 
 import { Crown } from "lucide-react";
-import { cn, formatBRL } from "@/lib/utils";
+import { cn, formatBirr } from "@/lib/utils";
 import { UserAvatar } from "@/components/shared/UserAvatar";
 import type { LeaderboardEntry } from "@/lib/types";
 
@@ -64,9 +64,9 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
 
       <div className="shrink-0 text-right">
         <span className="text-xs font-black text-white">
-          {formatBRL(balance)}
+          {formatBirr(balance)}
         </span>
-        <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">BRL</p>
+        <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">Birr</p>
       </div>
     </div>
   );

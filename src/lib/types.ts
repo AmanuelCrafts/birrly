@@ -15,7 +15,7 @@ export interface User {
   username?: string;
   /** Profile photo URL from Telegram (if available) */
   photoUrl?: string;
-  /** Current balance in BRL (display only — never modified client-side) */
+  /** Current balance in Birr (display only — never modified client-side) */
   balance: number;
   /** Current daily login streak in days */
   streak: number;
@@ -40,7 +40,7 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  /** Reward amount in BRL */
+  /** Reward amount in Birr */
   reward: number;
   /** Lucide icon name */
   icon: string;
@@ -58,7 +58,7 @@ export interface LeaderboardEntry {
     lastName?: string;
     username?: string;
   };
-  /** Total BRL earned (lifetime) */
+  /** Total Birr earned (lifetime) */
   balance: number;
 }
 
@@ -70,7 +70,7 @@ export type TransactionStatus = "completed" | "pending" | "failed";
 export interface Transaction {
   id: string;
   type: TransactionType;
-  /** Amount in BRL (positive for earn, negative for spend/withdraw) */
+  /** Amount in Birr (positive for earn, negative for spend/withdraw) */
   amount: number;
   description: string;
   createdAt: string;

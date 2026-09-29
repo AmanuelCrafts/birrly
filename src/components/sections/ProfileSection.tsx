@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileStat } from "@/components/profile/ProfileStat";
 import { ComingSoonCard } from "@/components/profile/ComingSoonCard";
-import { formatBRL, formatDate } from "@/lib/utils";
+import { formatBirr, formatDate } from "@/lib/utils";
 import type { User } from "@/lib/types";
 
 interface ProfileSectionProps {
@@ -23,8 +23,8 @@ export function ProfileSection({ user }: ProfileSectionProps) {
         <div className="grid grid-cols-3 gap-2.5">
           <ProfileStat
             label="Balance"
-            value={formatBRL(user.balance)}
-            icon={<span className="text-sm font-black text-brand-400">BRL</span>}
+            value={formatBirr(user.balance)}
+            icon={<span className="text-sm font-black text-brand-400">Birr</span>}
           />
           <ProfileStat
             label="Streak"
@@ -49,12 +49,12 @@ export function ProfileSection({ user }: ProfileSectionProps) {
           />
           <ComingSoonCard
             title="Referrals"
-            description="Invite friends and earn bonus BRL"
+            description="Invite friends and earn bonus Birr"
             icon={Users}
           />
           <ComingSoonCard
             title="Withdrawals"
-            description="Cash out your BRL balance"
+            description="Cash out your Birr balance"
             icon={ArrowDownToLine}
           />
         </div>

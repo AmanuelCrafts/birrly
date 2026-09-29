@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Birrly — Earn BRL",
+  title: "Birrly — Earn Birr",
   description: "Birrly is a Telegram Mini App for earning rewards and points through activities.",
   manifest: "/manifest.json",
 };

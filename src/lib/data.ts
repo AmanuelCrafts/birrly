@@ -29,7 +29,7 @@ export const mockTasks: Task[] = [
   {
     id: "watch-ad",
     title: "Watch & Earn",
-    description: "Watch an ad and earn BRL",
+    description: "Watch an ad and earn Birr",
     reward: 10,
     icon: "Play",
     status: "coming_soon",
