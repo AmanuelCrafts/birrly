@@ -1,27 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { mockUser } from "@/lib/data";
+import { useEffect, useState } from "react";
 import type { User } from "@/lib/types";
 import { useTelegram } from "./useTelegram";
 
-export function useUser(): User {
+export function useUser(): User | null {
   const telegram = useTelegram();
   const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [debug, setDebug] = useState<string>("init");
 
   useEffect(() => {
-    console.log("[useUser] telegram state:", {
-      isInsideTelegram: telegram.isInsideTelegram,
-      hasInitData: !!telegram.initData,
-      initDataLength: telegram.initData?.length,
-      user: telegram.user,
-    });
-
     if (!telegram.isInsideTelegram || !telegram.initData) {
-      console.log("[useUser] Not in Telegram, using mock data");
-      setDebug("not-in-telegram");
       setSupabaseUser(null);
       return;
     }
@@ -30,7 +19,6 @@ export function useUser(): User {
 
     async function authenticate() {
       setIsLoading(true);
-      setDebug("fetching");
       try {
         const res = await fetch("/api/auth/telegram", {
           method: "POST",
@@ -38,17 +26,12 @@ export function useUser(): User {
           body: JSON.stringify({ initData: telegram.initData }),
         });
 
-        setDebug(`status:${res.status}`);
-
         if (!res.ok) {
-          const errText = await res.text();
-          console.error("[Auth] Failed:", res.status, errText);
+          console.error("[Auth] Failed:", res.status, await res.text());
           return;
         }
 
         const data = await res.json();
-        console.log("[Auth] Success:", data);
-
         if (data.user && !cancelled) {
           setSupabaseUser({
             id: data.user.id,
@@ -61,11 +44,9 @@ export function useUser(): User {
             createdAt: data.user.created_at,
             isMock: false,
           });
-          setDebug(`ok:user-${data.user.id}`);
         }
       } catch (err) {
         console.error("[Auth] Error:", err);
-        setDebug(`error:${err instanceof Error ? err.message : "unknown"}`);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -75,23 +56,19 @@ export function useUser(): User {
     return () => { cancelled = true; };
   }, [telegram.isInsideTelegram, telegram.initData]);
 
-  return useMemo(() => {
-    if (telegram.isInsideTelegram && supabaseUser) {
-      return supabaseUser;
-    }
-    if (telegram.isInsideTelegram && isLoading && telegram.user) {
-      return {
-        id: String(telegram.user.id),
-        firstName: telegram.user.first_name,
-        lastName: telegram.user.last_name,
-        username: telegram.user.username,
-        photoUrl: telegram.user.photo_url,
-        balance: 0,
-        streak: 0,
-        createdAt: new Date().toISOString(),
-        isMock: false,
-      };
-    }
-    return mockUser;
-  }, [telegram.isInsideTelegram, telegram.user, supabaseUser, isLoading]);
+  if (telegram.isInsideTelegram && supabaseUser) return supabaseUser;
+  if (telegram.isInsideTelegram && isLoading && telegram.user) {
+    return {
+      id: String(telegram.user.id),
+      firstName: telegram.user.first_name,
+      lastName: telegram.user.last_name,
+      username: telegram.user.username,
+      photoUrl: telegram.user.photo_url,
+      balance: 0,
+      streak: 0,
+      createdAt: new Date().toISOString(),
+      isMock: false,
+    };
+  }
+  return null;
 }
