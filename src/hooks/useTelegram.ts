@@ -6,7 +6,7 @@ import type { TelegramContext } from "@/lib/types";
 
 /**
  * Hook that provides the Telegram context.
- * Initializes the SDK on mount and returns the context.
+ * Waits for the Telegram SDK script to load before reading context.
  */
 export function useTelegram(): TelegramContext {
   const [context, setContext] = useState<TelegramContext>(() =>
@@ -14,9 +14,25 @@ export function useTelegram(): TelegramContext {
   );
 
   useEffect(() => {
-    initTelegram();
-    // Re-read context after init (in case the script loaded late)
-    setContext(getTelegramContext());
+    let cancelled = false;
+
+    function checkTelegram() {
+      if (cancelled) return;
+
+      if (window.Telegram?.WebApp) {
+        initTelegram();
+        setContext(getTelegramContext());
+      } else {
+        // Telegram script hasn't loaded yet — check again shortly
+        setTimeout(checkTelegram, 50);
+      }
+    }
+
+    checkTelegram();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return context;
