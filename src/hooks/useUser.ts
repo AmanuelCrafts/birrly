@@ -12,7 +12,15 @@ export function useUser(): User {
   const [debug, setDebug] = useState<string>("init");
 
   useEffect(() => {
+    console.log("[useUser] telegram state:", {
+      isInsideTelegram: telegram.isInsideTelegram,
+      hasInitData: !!telegram.initData,
+      initDataLength: telegram.initData?.length,
+      user: telegram.user,
+    });
+
     if (!telegram.isInsideTelegram || !telegram.initData) {
+      console.log("[useUser] Not in Telegram, using mock data");
       setDebug("not-in-telegram");
       setSupabaseUser(null);
       return;
