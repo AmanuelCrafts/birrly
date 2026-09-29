@@ -5,25 +5,15 @@ import { mockUser } from "@/lib/data";
 import type { User } from "@/lib/types";
 import { useTelegram } from "./useTelegram";
 
-/**
- * Hook that provides the current user.
- *
- * When inside Telegram:
- *   1. Sends initData to /api/auth/telegram
- *   2. Server verifies initData cryptographically
- *   3. Server creates/updates user in Supabase
- *   4. Returns the verified user data
- *
- * When outside Telegram (browser dev):
- *   Falls back to mock data — no Supabase call is made.
- */
 export function useUser(): User {
   const telegram = useTelegram();
   const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [debug, setDebug] = useState<string>("init");
 
   useEffect(() => {
     if (!telegram.isInsideTelegram || !telegram.initData) {
+      setDebug("not-in-telegram");
       setSupabaseUser(null);
       return;
     }
@@ -32,6 +22,7 @@ export function useUser(): User {
 
     async function authenticate() {
       setIsLoading(true);
+      setDebug("fetching");
       try {
         const res = await fetch("/api/auth/telegram", {
           method: "POST",
@@ -39,9 +30,17 @@ export function useUser(): User {
           body: JSON.stringify({ initData: telegram.initData }),
         });
 
-        if (!res.ok) return;
+        setDebug(`status:${res.status}`);
+
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error("[Auth] Failed:", res.status, errText);
+          return;
+        }
 
         const data = await res.json();
+        console.log("[Auth] Success:", data);
+
         if (data.user && !cancelled) {
           setSupabaseUser({
             id: data.user.id,
@@ -54,9 +53,11 @@ export function useUser(): User {
             createdAt: data.user.created_at,
             isMock: false,
           });
+          setDebug(`ok:user-${data.user.id}`);
         }
       } catch (err) {
-        console.error("Auth error:", err);
+        console.error("[Auth] Error:", err);
+        setDebug(`error:${err instanceof Error ? err.message : "unknown"}`);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
