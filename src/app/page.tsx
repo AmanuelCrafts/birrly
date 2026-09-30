@@ -7,6 +7,7 @@ import { EarnSection } from "@/components/sections/EarnSection";
 import { LeaderboardSection } from "@/components/sections/LeaderboardSection";
 import { ProfileSection } from "@/components/sections/ProfileSection";
 import { AppLoader } from "@/components/ui/skeleton";
+import { AuthDebug } from "@/components/shared/AuthDebug";
 import { useTelegram } from "@/hooks/useTelegram";
 import { useUser } from "@/hooks/useUser";
 import type { Task } from "@/lib/types";
@@ -43,6 +44,7 @@ export default function Home() {
 
   return (
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col">
+      <AuthDebug />
       <main className="flex-1 pb-28">
         {activeTab === "home" && (
           <HomeSection
