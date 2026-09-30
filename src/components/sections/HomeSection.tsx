@@ -4,6 +4,7 @@ import { Coins } from "lucide-react";
 import { BalanceCard } from "@/components/home/BalanceCard";
 import { StreakIndicator } from "@/components/home/StreakIndicator";
 import { DailyActivity } from "@/components/home/DailyActivity";
+import { WatchAdButton } from "@/components/home/WatchAdButton";
 import { Button } from "@/components/ui/button";
 import { getGreeting } from "@/lib/utils";
 import type { Task, User } from "@/lib/types";
@@ -40,6 +41,10 @@ export function HomeSection({ user, onEarnClick, onTaskClick }: HomeSectionProps
           <Coins className="h-3.5 w-3.5" strokeWidth={2.5} />
           Earn Birr 💰
         </Button>
+      </div>
+
+      <div className="px-4">
+        <WatchAdButton />
       </div>
 
       <div className="px-4">
