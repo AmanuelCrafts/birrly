@@ -41,26 +41,6 @@ export default function Home() {
     return <AppLoader />;
   }
 
-  // Not inside Telegram — show message
-  if (!telegram.isInsideTelegram) {
-    return (
-      <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 px-8 text-center">
-        <div className="text-4xl">📱</div>
-        <h1 className="text-xl font-black uppercase tracking-tight text-white">
-          Birrly
-        </h1>
-        <p className="text-sm font-semibold text-white/50">
-          Open Birrly from your Telegram bot to get started.
-        </p>
-      </div>
-    );
-  }
-
-  // Inside Telegram but no user yet — loading
-  if (!user) {
-    return <AppLoader />;
-  }
-
   return (
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col">
       <main className="flex-1 pb-28">
