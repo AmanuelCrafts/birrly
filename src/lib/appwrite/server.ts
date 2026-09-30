@@ -1,4 +1,4 @@
-import { Client, Account, Databases, Storage } from "appwrite";
+import { Client, Account, Databases, Storage, type Models } from "appwrite";
 
 const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
 const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
@@ -55,20 +55,60 @@ function getStorage(): Storage {
   return _storage;
 }
 
-// Proxy objects that lazily initialize on first use
-export const databases = {
-  listDocuments: (...args: Parameters<Databases["listDocuments"]>) =>
-    getDatabases().listDocuments(...args),
-  getDocument: (...args: Parameters<Databases["getDocument"]>) =>
-    getDatabases().getDocument(...args),
-  createDocument: (...args: Parameters<Databases["createDocument"]>) =>
-    getDatabases().createDocument(...args),
-  updateDocument: (...args: Parameters<Databases["updateDocument"]>) =>
-    getDatabases().updateDocument(...args),
-  deleteDocument: (...args: Parameters<Databases["deleteDocument"]>) =>
-    getDatabases().deleteDocument(...args),
-};
+// Lazily-initialized service proxies with proper typing
+class DatabasesProxy {
+  listDocuments(databaseId: string, tableId: string, queries?: string[]) {
+    return getDatabases().listDocuments(databaseId, tableId, queries);
+  }
+  getDocument(databaseId: string, tableId: string, documentId: string) {
+    return getDatabases().getDocument(databaseId, tableId, documentId);
+  }
+  createDocument(
+    databaseId: string,
+    tableId: string,
+    documentId: string,
+    data: Record<string, unknown>
+  ) {
+    return getDatabases().createDocument(databaseId, tableId, documentId, data);
+  }
+  updateDocument(
+    databaseId: string,
+    tableId: string,
+    documentId: string,
+    data: Record<string, unknown>
+  ) {
+    return getDatabases().updateDocument(databaseId, tableId, documentId, data);
+  }
+  deleteDocument(databaseId: string, tableId: string, documentId: string) {
+    return getDatabases().deleteDocument(databaseId, tableId, documentId);
+  }
+}
 
-export const account = getAccount;
-export const storage = getStorage;
+class AccountProxy {
+  get() {
+    return getAccount().get();
+  }
+  create(userId: string, email: string, password: string, name?: string) {
+    return getAccount().create(userId, email, password, name);
+  }
+}
+
+class StorageProxy {
+  getFile(bucketId: string, fileId: string) {
+    return getStorage().getFile(bucketId, fileId);
+  }
+  getFileDownload(bucketId: string, fileId: string) {
+    return getStorage().getFileDownload(bucketId, fileId);
+  }
+  getFilePreview(bucketId: string, fileId: string) {
+    return getStorage().getFilePreview(bucketId, fileId);
+  }
+  getFileView(bucketId: string, fileId: string) {
+    return getStorage().getFileView(bucketId, fileId);
+  }
+}
+
+export const databases = new DatabasesProxy();
+export const account = new AccountProxy();
+export const storage = new StorageProxy();
 export { databaseId };
