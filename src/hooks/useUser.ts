@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { mockUser } from "@/lib/data";
 import type { User } from "@/lib/types";
 import { useTelegram } from "./useTelegram";
@@ -15,22 +15,19 @@ import { useTelegram } from "./useTelegram";
  *
  * When outside Telegram (browser dev):
  *   Falls back to mock data.
+ *
+ * Supports optimistic balance updates — call `addBalance()` to instantly
+ * update the balance on the frontend. The next reload fetches the real
+ * data from Appwrite.
  */
-export function useUser(): User {
+export function useUser(): User & { addBalance: (amount: number) => void } {
   const telegram = useTelegram();
   const [appwriteUser, setAppwriteUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const hasAuthenticated = useRef(false);
 
   useEffect(() => {
-    console.log("[useUser] telegram state:", {
-      isInsideTelegram: telegram.isInsideTelegram,
-      hasUser: !!telegram.user,
-      userId: telegram.user?.id,
-    });
-
     if (!telegram.isInsideTelegram || !telegram.user) {
-      console.log("[useUser] Not in Telegram, using mock data");
       setAppwriteUser(null);
       return;
     }
@@ -53,17 +50,12 @@ export function useUser(): User {
           }),
         });
 
-        console.log("[useUser] API response status:", res.status);
-
         if (!res.ok) {
-          const errText = await res.text();
-          console.error("[Auth] Failed:", res.status, errText);
+          console.error("[Auth] Failed:", res.status);
           return;
         }
 
         const data = await res.json();
-        console.log("[useUser] API response:", data);
-
         if (data.user && !cancelled) {
           setAppwriteUser({
             id: data.user.id,
@@ -88,8 +80,15 @@ export function useUser(): User {
     return () => { cancelled = true; };
   }, [telegram.isInsideTelegram, telegram.user]);
 
+  const addBalance = useCallback((amount: number) => {
+    setAppwriteUser((prev) => {
+      if (!prev) return prev;
+      return { ...prev, balance: prev.balance + amount };
+    });
+  }, []);
+
   if (telegram.isInsideTelegram && appwriteUser) {
-    return appwriteUser;
+    return { ...appwriteUser, addBalance };
   }
 
   if (telegram.isInsideTelegram && isLoading && telegram.user) {
@@ -103,8 +102,9 @@ export function useUser(): User {
       streak: 0,
       createdAt: new Date().toISOString(),
       isMock: false,
+      addBalance: () => {},
     };
   }
 
-  return mockUser;
+  return { ...mockUser, addBalance: () => {} };
 }

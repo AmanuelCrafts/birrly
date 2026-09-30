@@ -42,6 +42,12 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
   const user = useUser();
   const { count, limit, isLimitReached, increment } = useAdCounter();
 
+  const handleRewardEarned = (reward: number) => {
+    // Optimistic UI update — balance updates instantly
+    user.addBalance(reward);
+    increment();
+  };
+
   const handleClick = async () => {
     if (isComingSoon || isLoading) return;
 
@@ -84,7 +90,7 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
         }
 
         setMessage(data.message || `+${data.reward} Birr!`);
-        increment();
+        handleRewardEarned(data.reward);
 
         setTimeout(() => {
           setIsLoading(false);
