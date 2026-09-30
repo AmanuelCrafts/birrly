@@ -15,24 +15,25 @@ export function verifyTelegramInitData(
   const params = new Map<string, string>();
   const pairs = initData.split("&");
 
+  let hash = "";
   for (const pair of pairs) {
     const eqIndex = pair.indexOf("=");
     if (eqIndex === -1) continue;
     const key = pair.substring(0, eqIndex);
     const value = pair.substring(eqIndex + 1);
-    params.set(key, value);
+    if (key === "hash") {
+      hash = value;
+    } else {
+      params.set(key, value);
+    }
   }
 
-  const hash = params.get("hash");
   if (!hash) return null;
 
-  // Remove hash from params — it's the signature, not part of the data
-  params.delete("hash");
-
   // Build data_check_string: sort params alphabetically, join as key=value\n
-  const dataCheckString = Array.from(params.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, value]) => `${key}=${value}`)
+  const sortedKeys = Array.from(params.keys()).sort();
+  const dataCheckString = sortedKeys
+    .map((key) => `${key}=${params.get(key)}`)
     .join("\n");
 
   // Create secret key: HMAC-SHA256 of "WebAppData" with bot token as key
@@ -74,9 +75,7 @@ export function parseTelegramUser(
   if (!userJson) return null;
 
   try {
-    // The user field is URL-encoded JSON, so decode it first
-    const decoded = decodeURIComponent(userJson);
-    const user = JSON.parse(decoded);
+    const user = JSON.parse(userJson);
     if (!user.id || !user.first_name) return null;
     return {
       id: String(user.id),
