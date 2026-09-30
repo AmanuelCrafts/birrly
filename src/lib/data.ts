@@ -32,7 +32,7 @@ export const mockTasks: Task[] = [
     description: "Watch an ad and earn Birr",
     reward: 10,
     icon: "Play",
-    status: "coming_soon",
+    status: "available",
     category: "watch",
   },
   {
