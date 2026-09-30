@@ -44,14 +44,14 @@ export function HomeSection({ user, onEarnClick, onTaskClick }: HomeSectionProps
       </div>
 
       <div className="px-4">
-        <WatchAdButton />
-      </div>
-
-      <div className="px-4">
         <DailyActivity
           onTaskClick={onTaskClick}
           onViewAll={onEarnClick}
         />
+      </div>
+
+      <div className="px-4">
+        <WatchAdButton />
       </div>
     </div>
   );
