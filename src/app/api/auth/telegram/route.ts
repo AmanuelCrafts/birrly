@@ -10,13 +10,6 @@ const getAppwrite = async () => {
   return { databases, databaseId };
 };
 
-/**
- * POST /api/auth/telegram
- *
- * Registers or retrieves a Telegram user in Appwrite.
- * All Appwrite operations are server-side — API key never exposed to browser.
- */
-
 function generateReferralCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "";
@@ -60,7 +53,6 @@ export async function POST(request: NextRequest) {
     ]);
 
     if (existing.total > 0) {
-      // User exists — return their data
       const user = existing.documents[0];
       return NextResponse.json({
         user: {
@@ -84,36 +76,66 @@ export async function POST(request: NextRequest) {
     const referralCode = generateReferralCode();
     const now = new Date().toISOString();
 
-    const newUser = await databases.createDocument(databaseId, "users", "unique()", {
-      telegram_id: telegramId,
-      username: username || "",
-      first_name: firstName,
-      referral_code: referralCode,
-      referred_by: "",
-      balance: 0,
-      total_earned: 0,
-      total_withdrawn: 0,
-      account_status: "active",
-      created_at: now,
-      updated_at: now,
-    });
+    try {
+      const newUser = await databases.createDocument(databaseId, "users", "unique()", {
+        telegram_id: telegramId,
+        username: username || "",
+        first_name: firstName,
+        referral_code: referralCode,
+        referred_by: "",
+        balance: 0,
+        total_earned: 0,
+        total_withdrawn: 0,
+        account_status: "active",
+        created_at: now,
+        updated_at: now,
+      });
 
-    return NextResponse.json({
-      user: {
-        id: newUser.$id,
-        telegram_id: newUser.telegram_id,
-        username: newUser.username || "",
-        first_name: newUser.first_name,
-        referral_code: newUser.referral_code,
-        balance: newUser.balance,
-        total_earned: newUser.total_earned,
-        total_withdrawn: newUser.total_withdrawn,
-        account_status: newUser.account_status,
-        created_at: newUser.$createdAt,
-        updated_at: newUser.$updatedAt,
-      },
-      isNew: true,
-    });
+      return NextResponse.json({
+        user: {
+          id: newUser.$id,
+          telegram_id: newUser.telegram_id,
+          username: newUser.username || "",
+          first_name: newUser.first_name,
+          referral_code: newUser.referral_code,
+          balance: newUser.balance,
+          total_earned: newUser.total_earned,
+          total_withdrawn: newUser.total_withdrawn,
+          account_status: newUser.account_status,
+          created_at: newUser.$createdAt,
+          updated_at: newUser.$updatedAt,
+        },
+        isNew: true,
+      });
+    } catch (createErr) {
+      // If creation fails due to unique constraint, the user already exists
+      // Try to find them again
+      const retry = await databases.listDocuments(databaseId, "users", [
+        Query.equal("telegram_id", telegramId),
+      ]);
+
+      if (retry.total > 0) {
+        const user = retry.documents[0];
+        return NextResponse.json({
+          user: {
+            id: user.$id,
+            telegram_id: user.telegram_id,
+            username: user.username || "",
+            first_name: user.first_name,
+            referral_code: user.referral_code,
+            balance: user.balance,
+            total_earned: user.total_earned,
+            total_withdrawn: user.total_withdrawn,
+            account_status: user.account_status,
+            created_at: user.$createdAt,
+            updated_at: user.$updatedAt,
+          },
+          isNew: false,
+        });
+      }
+
+      throw createErr;
+    }
   } catch (err) {
     console.error("[Telegram Auth] Error:", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
