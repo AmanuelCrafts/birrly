@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Query } from "appwrite";
 
 // Force dynamic rendering — never statically evaluate this route
 export const dynamic = "force-dynamic";
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     // Look up existing user by telegram_id
     const existing = await databases.listDocuments(databaseId, "users", [
-      `telegram_id=${telegramId}`,
+      Query.equal("telegram_id", telegramId),
     ]);
 
     if (existing.total > 0) {
