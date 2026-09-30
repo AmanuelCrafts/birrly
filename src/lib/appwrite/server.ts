@@ -23,8 +23,8 @@ const client = new Client()
   .setEndpoint(endpoint)
   .setProject(projectId);
 
-// Set API key for server-side authentication
-(client as unknown as { setKey: (key: string) => void }).setKey(apiKey);
+// Set API key via header (SDK v28+ compatible)
+client.headers["X-Appwrite-Key"] = apiKey;
 
 export const account = new Account(client);
 export const databases = new Databases(client);
