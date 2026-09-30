@@ -99,25 +99,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create ad_events record
-    const now = new Date().toISOString();
-    await databases.createDocument(databaseId, "transactions", "unique()", {
-      user_id: userId,
-      type: "AD_REWARD",
-      amount: AD_REWARD_AMOUNT,
-      status: "COMPLETED",
-      reference_id: eventId,
-      metadata: JSON.stringify({ provider: "monetag", eventId }),
-      created_at: now,
-    });
-
-    // Credit the user (this also creates a transaction record)
-    // Note: We use creditUser which creates its own transaction record
-    // So we skip the manual transaction creation above and just use creditUser
-    // Actually, let me reconsider — we should use creditUser for the actual credit
-    // and create a separate ad_events record
-
-    // Credit the user
+    // Credit the user — this creates the transaction record and updates balance
     await creditUser(userId, AD_REWARD_AMOUNT, "AD_REWARD", eventId, JSON.stringify({
       provider: "monetag",
       eventId,
