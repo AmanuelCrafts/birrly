@@ -28,7 +28,7 @@ function getClient(): Client {
       .setEndpoint(endpoint)
       .setProject(projectId);
     if (apiKey) {
-      _client.setKey(apiKey);
+      _client.headers["X-Appwrite-Key"] = apiKey;
     }
   }
   return _client;
