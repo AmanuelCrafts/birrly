@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getTelegramContext, initTelegram } from "@/lib/telegram";
 import type { TelegramContext } from "@/lib/types";
 
-/**
- * Hook that provides the Telegram context.
- * Waits for the Telegram SDK script to load before reading context.
- */
 export function useTelegram(): TelegramContext {
   const [context, setContext] = useState<TelegramContext>(() =>
     getTelegramContext()
   );
+  const initialized = useRef(false);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     let cancelled = false;
 
     function checkTelegram() {
@@ -23,7 +23,6 @@ export function useTelegram(): TelegramContext {
         initTelegram();
         setContext(getTelegramContext());
       } else {
-        // Telegram script hasn't loaded yet — check again shortly
         setTimeout(checkTelegram, 50);
       }
     }

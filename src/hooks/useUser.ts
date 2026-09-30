@@ -8,6 +8,7 @@ export function useUser(): User | null {
   const telegram = useTelegram();
   const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const initDataRef = useRef<string | null>(null);
   const hasAuthenticated = useRef(false);
 
   useEffect(() => {
@@ -17,7 +18,11 @@ export function useUser(): User | null {
     }
 
     // Prevent re-authentication on re-renders
-    if (hasAuthenticated.current) return;
+    if (hasAuthenticated.current && initDataRef.current === telegram.initData) {
+      return;
+    }
+
+    initDataRef.current = telegram.initData;
     hasAuthenticated.current = true;
 
     let cancelled = false;
