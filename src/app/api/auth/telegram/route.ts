@@ -115,8 +115,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("[Telegram Auth] Error:", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { error: "Authentication failed" },
+      { error: "Authentication failed", details: errorMessage },
       { status: 500 }
     );
   }
