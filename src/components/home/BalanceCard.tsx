@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { formatBirr } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
@@ -25,12 +24,7 @@ export function BalanceCard({ balance }: BalanceCardProps) {
           </span>
           <span className="text-lg font-semibold text-purple-400">Birr</span>
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs text-lavender-300">
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20">
-            <TrendingUp className="h-3 w-3 text-purple-400" />
-          </div>
-          <span>Earn more by completing activities</span>
-        </div>
+
       </div>
     </Card>
   );
