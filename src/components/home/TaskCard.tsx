@@ -16,7 +16,6 @@ import { ComingSoon } from "@/components/shared/ComingSoon";
 import { showRewardedAd } from "@/lib/monetag";
 import { useTelegram } from "@/hooks/useTelegram";
 import { useUser } from "@/hooks/useUser";
-import { useAdCounter } from "@/hooks/useAdCounter";
 import type { Task } from "@/lib/types";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -40,7 +39,6 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
   const [message, setMessage] = useState("");
   const telegram = useTelegram();
   const user = useUser();
-  const { count, limit, isLimitReached, increment } = useAdCounter();
 
   const handleClick = async () => {
     if (isComingSoon || isLoading) return;
@@ -52,10 +50,6 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
       }
       if (!user) {
         setMessage("User not loaded");
-        return;
-      }
-      if (isLimitReached) {
-        setMessage("Daily limit reached");
         return;
       }
 
@@ -85,7 +79,6 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
 
         setMessage(data.message || `+${data.reward} Birr!`);
         user.addBalance(data.reward);
-        increment();
 
         setTimeout(() => {
           setIsLoading(false);
@@ -101,16 +94,13 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
     onTaskClick?.(task);
   };
 
-  const showAdCounter = task.id === "watch-ad" && !isComingSoon;
-
   return (
     <div className="space-y-1">
       <Card
         className={cn(
           "group relative overflow-hidden transition-all duration-200",
-          !isComingSoon && !isLimitReached && "hover:shadow-md hover:border-surface-300/60 cursor-pointer",
-          (isComingSoon || isLimitReached) && "opacity-50",
-          isLoading && "opacity-70",
+          !isComingSoon && "hover:shadow-md hover:border-surface-300/60 cursor-pointer",
+          (isComingSoon || isLoading) && "opacity-50",
           className
         )}
         onClick={handleClick}
@@ -121,7 +111,7 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
           <div
             className={cn(
               "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-colors",
-              isComingSoon || isLimitReached
+              isComingSoon || isLoading
                 ? "bg-surface-100"
                 : "bg-brand-50 group-hover:bg-brand-100"
             )}
@@ -132,7 +122,7 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
               <Icon
                 className={cn(
                   "h-4 w-4",
-                  isComingSoon || isLimitReached ? "text-surface-300" : "text-brand-500"
+                  isComingSoon || isLoading ? "text-surface-300" : "text-brand-500"
                 )}
                 strokeWidth={2.5}
               />
@@ -149,11 +139,6 @@ export function TaskCard({ task, onTaskClick, className }: TaskCardProps) {
             <p className="mt-0.5 text-xs text-surface-400 truncate">
               {task.description}
             </p>
-            {showAdCounter && (
-              <p className="mt-0.5 text-[10px] font-semibold text-brand-500">
-                {count}/{limit} ads today
-              </p>
-            )}
           </div>
 
           <div className="shrink-0 text-right">
