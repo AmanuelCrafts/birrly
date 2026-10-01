@@ -10,24 +10,24 @@ interface BalanceCardProps {
 
 export function BalanceCard({ balance }: BalanceCardProps) {
   return (
-    <Card className="relative overflow-hidden border-brand-200/40 bg-gradient-to-br from-white via-brand-50/30 to-white">
-      {/* Decorative gradient orbs */}
-      <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-brand-200/20 blur-3xl" />
-      <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-gold-200/15 blur-2xl" />
+    <Card className="relative overflow-hidden border-purple-500/20 bg-gradient-to-br from-dark-800 via-purple-900/20 to-dark-800">
+      {/* Glow effects */}
+      <div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-purple-500/10 blur-3xl" />
+      <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
 
       <div className="relative px-6 py-7">
-        <p className="text-xs font-semibold uppercase tracking-wider text-surface-400">
+        <p className="text-xs font-semibold uppercase tracking-wider text-lavender-300">
           Your Balance
         </p>
         <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-4xl font-bold tracking-tight text-surface-900">
+          <span className="text-4xl font-bold tracking-tight text-white">
             {formatBirr(balance)}
           </span>
-          <span className="text-lg font-semibold text-brand-600">Birr</span>
+          <span className="text-lg font-semibold text-purple-400">Birr</span>
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs text-surface-400">
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-100">
-            <TrendingUp className="h-3 w-3 text-brand-600" />
+        <div className="mt-4 flex items-center gap-2 text-xs text-lavender-300">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20">
+            <TrendingUp className="h-3 w-3 text-purple-400" />
           </div>
           <span>Earn more by completing activities</span>
         </div>

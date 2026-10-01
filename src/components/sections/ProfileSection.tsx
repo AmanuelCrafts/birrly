@@ -24,7 +24,7 @@ export function ProfileSection({ user }: ProfileSectionProps) {
           <ProfileStat
             label="Balance"
             value={formatBirr(user.balance)}
-            icon={<span className="text-sm font-bold text-brand-500">Birr</span>}
+            icon={<span className="text-sm font-bold text-purple-400">Birr</span>}
           />
           <ProfileStat
             label="Streak"
@@ -39,7 +39,7 @@ export function ProfileSection({ user }: ProfileSectionProps) {
         </div>
 
         <div className="space-y-2.5">
-          <h3 className="text-xs font-semibold text-surface-400 px-1">
+          <h3 className="text-xs font-semibold text-lavender-300/60 px-1">
             Coming Soon
           </h3>
           <ComingSoonCard

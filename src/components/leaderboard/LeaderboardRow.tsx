@@ -20,19 +20,19 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
       className={cn(
         "flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 transition-all duration-150",
         isCurrentUser
-          ? "border-brand-200/60 bg-brand-50/50"
-          : "border-surface-200/40 bg-white hover:border-surface-300/60",
+          ? "border-purple-500/30 bg-purple-500/5"
+          : "border-dark-600/40 bg-dark-800/60 hover:border-dark-500/60",
         className
       )}
     >
       <div className="flex w-7 shrink-0 items-center justify-center">
         {rank === 1 ? (
-          <Crown className="h-4 w-4 text-gold-500" strokeWidth={2.5} />
+          <Crown className="h-4 w-4 text-gold-400" strokeWidth={2.5} />
         ) : (
           <span
             className={cn(
               "text-xs font-bold",
-              isTop3 ? "text-gold-500" : "text-surface-400"
+              isTop3 ? "text-gold-400" : "text-lavender-300/50"
             )}
           >
             {rank}
@@ -51,22 +51,22 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
         <p
           className={cn(
             "text-sm font-semibold truncate",
-            isCurrentUser ? "text-brand-600" : "text-surface-800"
+            isCurrentUser ? "text-purple-400" : "text-white"
           )}
         >
           {user.firstName}
           {isCurrentUser && " (You)"}
         </p>
         {user.username && (
-          <p className="text-xs text-surface-400 truncate">@{user.username}</p>
+          <p className="text-xs text-lavender-300/50 truncate">@{user.username}</p>
         )}
       </div>
 
       <div className="shrink-0 text-right">
-        <span className="text-sm font-bold text-surface-800">
+        <span className="text-sm font-bold text-white">
           {formatBirr(balance)}
         </span>
-        <p className="text-[10px] font-medium text-surface-300">Birr</p>
+        <p className="text-[10px] font-medium text-lavender-300/40">Birr</p>
       </div>
     </div>
   );

@@ -108,7 +108,7 @@ export function EarnTaskCard({ task, onTaskClick, className }: EarnTaskCardProps
       <Card
         className={cn(
           "group relative overflow-hidden transition-all duration-200",
-          !isComingSoon && !isLimitReached && "hover:shadow-md hover:border-surface-300/60 cursor-pointer",
+          !isComingSoon && !isLimitReached && "hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 cursor-pointer",
           (isComingSoon || isLimitReached) && "opacity-50",
           isLoading && "opacity-70",
           className
@@ -122,17 +122,17 @@ export function EarnTaskCard({ task, onTaskClick, className }: EarnTaskCardProps
             className={cn(
               "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-colors",
               isComingSoon || isLimitReached
-                ? "bg-surface-100"
-                : "bg-brand-50 group-hover:bg-brand-100"
+                ? "bg-dark-700"
+                : "bg-purple-500/10 group-hover:bg-purple-500/15"
             )}
           >
             {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin text-brand-500" />
+              <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
             ) : (
               <Icon
                 className={cn(
                   "h-4 w-4",
-                  isComingSoon || isLimitReached ? "text-surface-300" : "text-brand-500"
+                  isComingSoon || isLimitReached ? "text-lavender-300/30" : "text-purple-400"
                 )}
                 strokeWidth={2.5}
               />
@@ -141,26 +141,26 @@ export function EarnTaskCard({ task, onTaskClick, className }: EarnTaskCardProps
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-surface-800 truncate">
+              <h3 className="text-sm font-semibold text-white truncate">
                 {task.title}
               </h3>
               {isComingSoon && <ComingSoon className="shrink-0" />}
             </div>
-            <p className="mt-0.5 text-xs text-surface-400 truncate">
+            <p className="mt-0.5 text-xs text-lavender-300/60 truncate">
               {task.description}
             </p>
             {showAdCounter && (
-              <p className="mt-0.5 text-[10px] font-semibold text-brand-500">
+              <p className="mt-0.5 text-[10px] font-semibold text-purple-400">
                 {count}/{limit} ads today
               </p>
             )}
           </div>
 
           <div className="shrink-0 text-right">
-            <span className="text-sm font-bold text-brand-600">
+            <span className="text-sm font-bold text-purple-400">
               +{formatBirr(task.reward)}
             </span>
-            <p className="text-[10px] font-medium text-surface-300">Birr</p>
+            <p className="text-[10px] font-medium text-lavender-300/40">Birr</p>
           </div>
         </div>
       </Card>
@@ -169,8 +169,8 @@ export function EarnTaskCard({ task, onTaskClick, className }: EarnTaskCardProps
           className={cn(
             "text-center text-xs font-medium",
             message.includes("Failed") || message.includes("error") || message.includes("limit") || message.includes("Duplicate")
-              ? "text-coral-500"
-              : "text-brand-600"
+              ? "text-coral-400"
+              : "text-purple-400"
           )}
         >
           {message}

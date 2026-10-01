@@ -20,7 +20,7 @@ export function DailyActivity({ onTaskClick, onViewAll }: DailyActivityProps) {
         <CardTitle>Daily Activity</CardTitle>
         <button
           onClick={onViewAll}
-          className="flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-500 transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-xs font-semibold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
         >
           View all
           <ChevronRight className="h-3.5 w-3.5" />

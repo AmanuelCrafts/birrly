@@ -6,11 +6,11 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-brand-50 text-brand-700 border border-brand-200/60",
-        gold: "bg-gold-50 text-gold-600 border border-gold-200/60",
-        muted: "bg-surface-100 text-surface-500 border border-surface-200/60",
-        danger: "bg-coral-50 text-coral-500 border border-coral-100",
-        sky: "bg-sky-50 text-sky-500 border border-sky-100",
+        default: "bg-purple-500/15 text-purple-300 border border-purple-500/20",
+        gold: "bg-gold-500/15 text-gold-400 border border-gold-500/20",
+        muted: "bg-dark-700 text-lavender-300 border border-dark-600",
+        danger: "bg-coral-500/15 text-coral-400 border border-coral-500/20",
+        sky: "bg-sky-500/15 text-sky-400 border border-sky-500/20",
       },
     },
     defaultVariants: {
