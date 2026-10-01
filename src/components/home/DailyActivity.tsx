@@ -16,17 +16,17 @@ export function DailyActivity({ onTaskClick, onViewAll }: DailyActivityProps) {
 
   return (
     <Card>
-      <CardHeader className="px-4 pt-4 pb-1">
+      <CardHeader className="px-5 pt-5 pb-2">
         <CardTitle>Daily Activity</CardTitle>
         <button
           onClick={onViewAll}
-          className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-brand-400 hover:text-brand-300 transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-500 transition-colors cursor-pointer"
         >
           View all
-          <ChevronRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+          <ChevronRight className="h-3.5 w-3.5" />
         </button>
       </CardHeader>
-      <CardContent className="space-y-2 px-3 pb-3">
+      <CardContent className="space-y-2.5 px-4 pb-4">
         {dailyTasks.map((task) => (
           <TaskCard
             key={task.id}

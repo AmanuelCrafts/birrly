@@ -2,27 +2,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold uppercase tracking-wide transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 disabled:pointer-events-none disabled:opacity-40 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer select-none border-2",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 disabled:pointer-events-none disabled:opacity-40 active:scale-[0.97] cursor-pointer select-none shadow-sm",
   {
     variants: {
       variant: {
         primary:
-          "bg-brand-500 text-ink-950 border-ink-950 shadow-[4px_4px_0px_#000000] hover:bg-brand-400",
+          "bg-gradient-to-b from-brand-400 to-brand-500 text-white shadow-brand-500/25 hover:from-brand-300 hover:to-brand-400 hover:shadow-brand-500/30",
         secondary:
-          "bg-ink-800 text-white border-white/20 shadow-[4px_4px_0px_#000000] hover:bg-ink-700 hover:border-white/30",
+          "bg-white text-surface-700 border border-surface-200 shadow-surface-200/50 hover:bg-surface-50 hover:border-surface-300",
         gold:
-          "bg-gold-500 text-ink-950 border-ink-950 shadow-[4px_4px_0px_#000000] hover:bg-gold-400",
+          "bg-gradient-to-b from-gold-400 to-gold-500 text-white shadow-gold-500/25 hover:from-gold-300 hover:to-gold-400",
         danger:
-          "bg-coral-500 text-white border-ink-950 shadow-[4px_4px_0px_#000000] hover:bg-coral-400",
+          "bg-gradient-to-b from-coral-400 to-coral-500 text-white shadow-coral-500/25 hover:from-coral-300 hover:to-coral-400",
         ghost:
-          "bg-transparent text-white/70 border-transparent shadow-none hover:text-white hover:bg-white/5",
+          "bg-transparent text-surface-500 shadow-none hover:text-surface-700 hover:bg-surface-100",
         outline:
-          "bg-transparent text-brand-400 border-brand-500/50 shadow-[4px_4px_0px_#000000] hover:bg-brand-500/10",
+          "bg-transparent text-brand-600 border border-brand-300 shadow-none hover:bg-brand-50",
       },
       size: {
         sm: "h-9 px-4 text-xs",
-        md: "h-12 px-5 text-sm",
-        lg: "h-14 px-7 text-base",
+        md: "h-11 px-5 text-sm",
+        lg: "h-13 px-7 text-base",
         icon: "h-11 w-11",
       },
     },

@@ -13,11 +13,11 @@ export function EarnSection({ onTaskClick }: EarnSectionProps) {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="💰 Earn Birr"
+        title="Earn Birr"
         subtitle="Complete activities and grow your balance."
       />
 
-      <div className="space-y-2.5 px-4 pb-4">
+      <div className="space-y-2.5 px-5 pb-4">
         {mockTasks.map((task, i) => (
           <div
             key={task.id}

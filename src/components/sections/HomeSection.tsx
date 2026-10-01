@@ -17,18 +17,18 @@ interface HomeSectionProps {
 export function HomeSection({ user, onEarnClick, onTaskClick }: HomeSectionProps) {
   return (
     <div className="animate-fade-in space-y-4">
-      <div className="px-4 pt-6">
-        <p className="text-xs font-bold text-white/50">
+      <div className="px-5 pt-7">
+        <p className="text-sm text-surface-400">
           {getGreeting()},{" "}
-          <span className="font-black text-white">{user.firstName}</span>
+          <span className="font-semibold text-surface-900">{user.firstName}</span>
         </p>
       </div>
 
-      <div className="px-4">
+      <div className="px-5">
         <BalanceCard balance={user.balance} />
       </div>
 
-      <div className="flex items-center gap-2.5 px-4">
+      <div className="flex items-center gap-2.5 px-5">
         <StreakIndicator streak={user.streak} />
         <div className="flex-1" />
         <Button
@@ -37,12 +37,12 @@ export function HomeSection({ user, onEarnClick, onTaskClick }: HomeSectionProps
           onClick={onEarnClick}
           className="shrink-0"
         >
-          <Coins className="h-3.5 w-3.5" strokeWidth={2.5} />
-          Earn Birr 💰
+          <Coins className="h-4 w-4" />
+          Earn Birr
         </Button>
       </div>
 
-      <div className="px-4">
+      <div className="px-5">
         <DailyActivity
           onTaskClick={onTaskClick}
           onViewAll={onEarnClick}
