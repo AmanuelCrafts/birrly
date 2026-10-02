@@ -10,12 +10,16 @@ import { ProfileSection } from "@/components/sections/ProfileSection";
 import { AppLoader } from "@/components/ui/skeleton";
 import { useTelegram } from "@/hooks/useTelegram";
 import { useUser } from "@/hooks/useUser";
+import { useLanguage } from "@/hooks/useLanguage";
+import { LanguageProvider } from "@/hooks/useLanguage";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import type { Task, VipPlan } from "@/lib/types";
 
-export default function Home() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState<TabId>("home");
   const telegram = useTelegram();
   const user = useUser();
+  const { t } = useLanguage();
 
   const [isReady, setIsReady] = useState(false);
 
@@ -81,5 +85,16 @@ export default function Home() {
 
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <LanguageProvider>
+      <div className="px-4 pt-3 flex justify-end">
+        <LanguageSwitcher />
+      </div>
+      <AppContent />
+    </LanguageProvider>
   );
 }

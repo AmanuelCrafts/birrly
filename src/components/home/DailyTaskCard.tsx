@@ -2,6 +2,7 @@
 
 import { Target, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Button } from "@/components/ui/button";
 
 interface DailyTaskCardProps {
@@ -17,6 +18,7 @@ export function DailyTaskCard({
   completed,
   onStartTasks,
 }: DailyTaskCardProps) {
+  const { t } = useLanguage();
   const progress = Math.min((completed / requiredActivities) * 100, 100);
   const isComplete = completed >= requiredActivities;
 
@@ -26,7 +28,7 @@ export function DailyTaskCard({
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-brand-400" strokeWidth={2.5} />
           <span className="text-sm font-bold uppercase tracking-wider text-white/60">
-            Daily Task
+            {t("dailyTask")}
           </span>
         </div>
         <span
@@ -40,7 +42,7 @@ export function DailyTaskCard({
       </div>
 
       <p className="mt-1 text-xs font-semibold text-white/40">
-        VIP {vipLevel} requires {requiredActivities} daily activities
+        VIP {vipLevel} {t("requiresActivities")}
       </p>
 
       {/* Progress bar */}
@@ -65,10 +67,10 @@ export function DailyTaskCard({
         className="mt-4 w-full"
       >
         {isComplete ? (
-          "All Done for Today"
+          t("allDoneToday")
         ) : (
           <>
-            Start Tasks
+            {t("startTasks")}
             <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
           </>
         )}

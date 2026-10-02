@@ -7,6 +7,7 @@ import { mockTransactions } from "@/lib/data";
 import { formatBirr, formatDate } from "@/lib/utils";
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { User } from "@/lib/types";
 
 interface WalletSectionProps {
@@ -14,11 +15,13 @@ interface WalletSectionProps {
 }
 
 export function WalletSection({ user }: WalletSectionProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="Wallet"
-        subtitle="Manage your earnings and withdrawals."
+        title={`💰 ${t("walletTitle")}`}
+        subtitle={t("walletSubtitle")}
       />
 
       <div className="space-y-4 px-4 pb-4">
@@ -30,7 +33,7 @@ export function WalletSection({ user }: WalletSectionProps) {
         {/* Recent Transactions */}
         <Card>
           <CardHeader className="px-4 pt-4 pb-1">
-            <CardTitle>Recent Transactions</CardTitle>
+            <CardTitle>{t("recentTransactions")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-1 px-2 pb-3">
             {mockTransactions.map((tx) => (

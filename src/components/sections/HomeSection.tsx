@@ -7,7 +7,7 @@ import { DailyTaskCard } from "@/components/home/DailyTaskCard";
 import { VipPlansList } from "@/components/home/VipPlansList";
 import { SectionHeader } from "@/components/home/SectionHeader";
 import { mockVipPlans } from "@/lib/data";
-import { getGreeting } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { User, VipPlan } from "@/lib/types";
 
 interface HomeSectionProps {
@@ -23,7 +23,15 @@ export function HomeSection({
   onViewVipDetails,
   onWithdraw,
 }: HomeSectionProps) {
+  const { t } = useLanguage();
   const currentPlan = mockVipPlans.find((p) => p.level === user.vipLevel) ?? mockVipPlans[0];
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t("greetingMorning");
+    if (hour < 17) return t("greetingAfternoon");
+    return t("greetingEvening");
+  };
 
   return (
     <div className="animate-fade-in space-y-5">
@@ -70,8 +78,8 @@ export function HomeSection({
       {/* 5. VIP Plans */}
       <div className="space-y-3 px-4 pb-4">
         <SectionHeader
-          title="VIP Plans"
-          subtitle="Upgrade to earn more"
+          title={t("vipPlans")}
+          subtitle={t("upgradeToEarnMore")}
         />
         <VipPlansList
           plans={mockVipPlans}

@@ -2,21 +2,22 @@
 
 import { Home, Coins, Wallet, Target, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export type TabId = "home" | "earn" | "wallet" | "plans" | "profile";
 
 interface NavItem {
   id: TabId;
-  label: string;
+  labelKey: "home" | "earn" | "wallet" | "plans" | "profile";
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
 }
 
 const navItems: NavItem[] = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "earn", label: "Earn", icon: Coins },
-  { id: "wallet", label: "Wallet", icon: Wallet },
-  { id: "plans", label: "Plans", icon: Target },
-  { id: "profile", label: "Profile", icon: User },
+  { id: "home", labelKey: "home", icon: Home },
+  { id: "earn", labelKey: "earn", icon: Coins },
+  { id: "wallet", labelKey: "wallet", icon: Wallet },
+  { id: "plans", labelKey: "plans", icon: Target },
+  { id: "profile", labelKey: "profile", icon: User },
 ];
 
 interface BottomNavProps {
@@ -25,6 +26,8 @@ interface BottomNavProps {
 }
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+  const { t } = useLanguage();
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
       <div className="mx-auto w-full max-w-md">
@@ -49,7 +52,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                   )}
                   <Icon className="relative h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
                   <span className="relative text-[9px] font-bold uppercase tracking-wider">
-                    {item.label}
+                    {t(item.labelKey)}
                   </span>
                 </button>
               );

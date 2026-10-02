@@ -2,6 +2,7 @@
 
 import { Check, Lock } from "lucide-react";
 import { cn, formatBirr } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { VipPlan } from "@/lib/types";
 
 interface VipPlansListProps {
@@ -17,6 +18,8 @@ export function VipPlansList({
   onSelectPlan,
   className,
 }: VipPlansListProps) {
+  const { t } = useLanguage();
+
   return (
     <div className={cn("space-y-2.5", className)}>
       {plans.map((plan, i) => {
@@ -42,7 +45,7 @@ export function VipPlansList({
             {isCurrent && (
               <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-brand-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-brand-300">
                 <Check className="h-2.5 w-2.5" strokeWidth={3} />
-                Current Plan
+                {t("currentPlan")}
               </div>
             )}
 
@@ -81,7 +84,7 @@ export function VipPlansList({
                   )}
                 </div>
                 <p className="mt-0.5 text-[11px] font-semibold text-white/40">
-                  {formatBirr(plan.deposit)} ETB deposit
+                  {formatBirr(plan.deposit)} ETB {t("deposit")}
                 </p>
               </div>
 
@@ -104,7 +107,7 @@ export function VipPlansList({
             {/* Activities info */}
             <div className="mt-3 flex items-center gap-2">
               <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-bold text-white/40">
-                {plan.dailyActivities} activities/day
+                {plan.dailyActivities} {t("activitiesPerDay")}
               </span>
             </div>
           </button>

@@ -3,6 +3,7 @@
 import { PageHeader } from "@/components/layout/PageHeader";
 import { EarnTaskCard } from "@/components/earn/EarnTaskCard";
 import { mockTasks } from "@/lib/data";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Task } from "@/lib/types";
 
 interface EarnSectionProps {
@@ -10,11 +11,13 @@ interface EarnSectionProps {
 }
 
 export function EarnSection({ onTaskClick }: EarnSectionProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="💰 Earn Birr"
-        subtitle="Complete activities and grow your balance."
+        title={`💰 ${t("earnBirr")}`}
+        subtitle={t("earnSubtitle")}
       />
 
       <div className="space-y-2.5 px-4 pb-4">

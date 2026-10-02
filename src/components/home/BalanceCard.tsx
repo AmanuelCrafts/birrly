@@ -2,6 +2,7 @@
 
 import { TrendingUp, Wallet } from "lucide-react";
 import { formatBirr } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Button } from "@/components/ui/button";
 
 interface BalanceCardProps {
@@ -11,12 +12,13 @@ interface BalanceCardProps {
 }
 
 export function BalanceCard({ balance, todayIncome, onWithdraw }: BalanceCardProps) {
+  const { t } = useLanguage();
   const canWithdraw = balance > 0;
 
   return (
     <div className="card-premium card-glow p-5">
       <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
-        Available Balance
+        {t("availableBalance")}
       </p>
 
       <div className="mt-2 flex items-baseline gap-1.5">
@@ -28,7 +30,7 @@ export function BalanceCard({ balance, todayIncome, onWithdraw }: BalanceCardPro
 
       <div className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
         <TrendingUp className="h-4 w-4" strokeWidth={2.5} />
-        <span>Today&apos;s income: +{formatBirr(todayIncome)} ETB</span>
+        <span>{t("todaysIncome")}: +{formatBirr(todayIncome)} ETB</span>
       </div>
 
       <Button
@@ -39,7 +41,7 @@ export function BalanceCard({ balance, todayIncome, onWithdraw }: BalanceCardPro
         className="mt-4 w-full"
       >
         <Wallet className="h-4 w-4" strokeWidth={2.5} />
-        Withdraw
+        {t("withdraw")}
       </Button>
     </div>
   );
