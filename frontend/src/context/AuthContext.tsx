@@ -51,7 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!response.success || !response.data) {
         setState("error");
-        setError(response.error?.message ?? "Authentication failed.");
+        setError(
+          response.error?.message ??
+            "Authentication failed. Please make sure the backend server is running."
+        );
         return;
       }
 
@@ -59,7 +62,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setState("authenticated");
     } catch (err) {
       setState("error");
-      setError("Unable to authenticate with Telegram.");
+      setError(
+        "Unable to connect to the server. Please make sure the backend is deployed and running."
+      );
     }
   }, []);
 
