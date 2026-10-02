@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Birrly — Telegram Mini App
 
-## Getting Started
+A gamified rewards Telegram Mini App. Phase 1: Authentication + User System.
 
-First, run the development server:
+## Architecture
+
+```
+birrly/
+├── backend/          # Fastify + TypeScript + Prisma + PostgreSQL
+│   ├── prisma/
+│   │   └── schema.prisma
+│   ├── src/
+│   │   ├── config/
+│   │   ├── middleware/
+│   │   ├── modules/auth/
+│   │   ├── plugins/
+│   │   ├── utils/
+│   │   ├── app.ts
+│   │   └── server.ts
+│   ├── .env.example
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/         # React + TypeScript + Vite
+│   ├── src/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── lib/
+│   │   └── pages/
+│   ├── index.html
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+└── package.json      # Root workspace
+```
+
+## Prerequisites
+
+- Node.js 20+
+- PostgreSQL 14+
+- A Telegram bot (get token from [@BotFather](https://t.me/BotFather))
+
+## Setup
+
+### 1. Clone and install
+
+```bash
+git clone <repo-url>
+cd birrly
+npm install
+```
+
+### 2. Set up PostgreSQL
+
+```bash
+# Create database
+createdb birrly
+```
+
+### 3. Configure environment variables
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+Edit `backend/.env`:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/birrly?schema=public"
+TELEGRAM_BOT_TOKEN="your-bot-token-from-botfather"
+SESSION_SECRET="generate-with-openssl-rand-hex-32"
+FRONTEND_URL="http://localhost:5173"
+NODE_ENV="development"
+PORT="3001"
+```
+
+### 4. Run Prisma migrations
+
+```bash
+npm run db:migrate
+```
+
+This creates the `users` table with proper indexes and constraints.
+
+### 5. Start development servers
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This starts both:
+- Backend on http://localhost:3001
+- Frontend on http://localhost:5173
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Telegram Bot Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
+2. Send `/newbot` and follow the prompts
+3. Copy the bot token and put it in `backend/.env` as `TELEGRAM_BOT_TOKEN`
+4. Send `/newapp` to BotFather to create a Mini App
+5. Set the Mini App URL to your frontend URL (use ngrok for local dev)
 
-## Learn More
+### Local development with ngrok
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Install ngrok if you haven't
+npm install -g ngrok
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Expose your frontend
+ngrok http 5173
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Use the https URL as your Mini App URL in BotFather
+```
 
-## Deploy on Vercel
+## API Endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/telegram` | Authenticate with Telegram init data |
+| GET | `/api/auth/me` | Get current authenticated user |
+| POST | `/api/auth/logout` | Destroy session |
+| GET | `/api/health` | Health check |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Authentication Flow
+
+```
+Telegram → Open Mini App → WebApp SDK init → Send initData to backend
+→ Backend verifies HMAC → Find/create user → Create session cookie
+→ Return user → Frontend loads Home page
+```
+
+## Security
+
+- Telegram init data verified server-side using HMAC-SHA256
+- Bot token never exposed to frontend
+- HTTP-only session cookies
+- Rate limiting on auth endpoints
+- Input validation with Zod
+- CORS restricted to frontend URL
+- Timing-safe hash comparison
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start both backend and frontend |
+| `npm run build` | Build both packages |
+| `npm run db:migrate` | Run Prisma migrations |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run db:generate` | Generate Prisma client |
