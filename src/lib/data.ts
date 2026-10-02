@@ -1,4 +1,4 @@
-import type { LeaderboardEntry, Task, Transaction, User } from "./types";
+import type { LeaderboardEntry, Task, Transaction, User, VipPlan } from "./types";
 
 /**
  * Birrly — Mock data
@@ -18,10 +18,25 @@ export const mockUser: User = {
   firstName: "Amanuel",
   username: "amanuel",
   balance: 1250,
-  streak: 3,
+  streak: 12,
   createdAt: "2025-06-15T10:30:00Z",
   isMock: true,
+  vipLevel: 2,
+  todayIncome: 7.5,
+  dailyTasksCompleted: 7,
 };
+
+// ─── Mock VIP Plans ──────────────────────────────────────────────────
+
+export const mockVipPlans: VipPlan[] = [
+  { level: 1, name: "VIP 1", deposit: 100, dailyIncome: 3, dailyActivities: 5 },
+  { level: 2, name: "VIP 2", deposit: 250, dailyIncome: 7.5, dailyActivities: 10 },
+  { level: 3, name: "VIP 3", deposit: 500, dailyIncome: 15, dailyActivities: 20 },
+  { level: 4, name: "VIP 4", deposit: 1000, dailyIncome: 30, dailyActivities: 35 },
+  { level: 5, name: "VIP 5", deposit: 2500, dailyIncome: 75, dailyActivities: 50 },
+  { level: 6, name: "VIP 6", deposit: 5000, dailyIncome: 150, dailyActivities: 75 },
+  { level: 7, name: "VIP 7", deposit: 10000, dailyIncome: 300, dailyActivities: 100 },
+];
 
 // ─── Mock Tasks ───────────────────────────────────────────────────────────────
 
@@ -32,7 +47,7 @@ export const mockTasks: Task[] = [
     description: "Watch an ad and earn Birr",
     reward: 10,
     icon: "Play",
-    status: "available",
+    status: "coming_soon",
     category: "watch",
   },
   {

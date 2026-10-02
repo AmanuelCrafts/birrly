@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { BottomNav, type TabId } from "@/components/layout/BottomNav";
 import { HomeSection } from "@/components/sections/HomeSection";
 import { EarnSection } from "@/components/sections/EarnSection";
-import { LeaderboardSection } from "@/components/sections/LeaderboardSection";
+import { WalletSection } from "@/components/sections/WalletSection";
+import { PlansSection } from "@/components/sections/PlansSection";
 import { ProfileSection } from "@/components/sections/ProfileSection";
 import { AppLoader } from "@/components/ui/skeleton";
-import { AuthDebug } from "@/components/shared/AuthDebug";
 import { useTelegram } from "@/hooks/useTelegram";
 import { useUser } from "@/hooks/useUser";
-import type { Task } from "@/lib/types";
+import type { Task, VipPlan } from "@/lib/types";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("home");
@@ -38,26 +38,41 @@ export default function Home() {
     setActiveTab(tab);
   };
 
+  const handleViewVipDetails = (_plan: VipPlan) => {
+    telegram.hapticFeedback.impact("light");
+    setActiveTab("plans");
+  };
+
+  const handleWithdraw = () => {
+    telegram.hapticFeedback.notification("success");
+  };
+
   if (!isReady) {
     return <AppLoader />;
   }
 
   return (
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col">
-      <AuthDebug />
       <main className="flex-1 pb-28">
         {activeTab === "home" && (
           <HomeSection
             user={user}
             onEarnClick={handleEarnClick}
-            onTaskClick={handleTaskClick}
+            onViewVipDetails={handleViewVipDetails}
+            onWithdraw={handleWithdraw}
           />
         )}
         {activeTab === "earn" && (
           <EarnSection onTaskClick={handleTaskClick} />
         )}
-        {activeTab === "rank" && (
-          <LeaderboardSection user={user} />
+        {activeTab === "wallet" && (
+          <WalletSection user={user} />
+        )}
+        {activeTab === "plans" && (
+          <PlansSection
+            user={user}
+            onSelectPlan={handleViewVipDetails}
+          />
         )}
         {activeTab === "profile" && (
           <ProfileSection user={user} />

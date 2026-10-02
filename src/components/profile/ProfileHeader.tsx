@@ -10,28 +10,26 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
   return (
-    <Card className="relative overflow-hidden border-dark-600/40">
-      {/* Decorative gradient */}
-      <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl" />
-      <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-violet-500/10 blur-2xl" />
+    <Card className="relative overflow-hidden">
+      <div className="absolute top-0 right-0 h-8 w-8 bg-brand-500/15" />
+      <div className="absolute bottom-0 left-0 h-5 w-5 bg-gold-500/10" />
 
-      <div className="relative flex flex-col items-center px-6 py-8">
+      <div className="relative flex flex-col items-center px-5 py-8">
         <UserAvatar
           firstName={user.firstName}
           lastName={user.lastName}
           id={user.id}
-          size="xl"
-          className="ring-4 ring-purple-500/20"
+          size="lg"
         />
-        <h2 className="mt-4 text-xl font-bold tracking-tight text-white">
+        <h2 className="mt-4 text-xl font-black uppercase tracking-tight text-white">
           {user.firstName}
           {user.lastName ? ` ${user.lastName}` : ""}
         </h2>
         {user.username && (
-          <p className="mt-1 text-sm text-lavender-300/60">@{user.username}</p>
+          <p className="mt-1 text-xs font-bold text-white/40">@{user.username}</p>
         )}
         {user.isMock && (
-          <span className="mt-3 rounded-full bg-dark-700 border border-dark-600 px-3 py-1 text-[10px] font-semibold text-lavender-300">
+          <span className="mt-3 rounded-lg border-2 border-gold-500/40 bg-gold-500/10 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-gold-400">
             Demo Account
           </span>
         )}

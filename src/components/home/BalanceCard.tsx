@@ -1,31 +1,46 @@
 "use client";
 
+import { TrendingUp, Wallet } from "lucide-react";
 import { formatBirr } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface BalanceCardProps {
   balance: number;
+  todayIncome: number;
+  onWithdraw?: () => void;
 }
 
-export function BalanceCard({ balance }: BalanceCardProps) {
+export function BalanceCard({ balance, todayIncome, onWithdraw }: BalanceCardProps) {
+  const canWithdraw = balance > 0;
+
   return (
-    <Card className="relative overflow-hidden border-purple-500/20 bg-gradient-to-br from-dark-800 via-purple-900/20 to-dark-800">
-      {/* Glow effects */}
-      <div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-purple-500/10 blur-3xl" />
-      <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
+    <div className="card-premium card-glow p-5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+        Available Balance
+      </p>
 
-      <div className="relative px-6 py-7">
-        <p className="text-xs font-semibold uppercase tracking-wider text-lavender-300">
-          Your Balance
-        </p>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-4xl font-bold tracking-tight text-white">
-            {formatBirr(balance)}
-          </span>
-          <span className="text-lg font-semibold text-purple-400">Birr</span>
-        </div>
-
+      <div className="mt-2 flex items-baseline gap-1.5">
+        <span className="text-4xl font-black tracking-tight text-white">
+          {formatBirr(balance)}
+        </span>
+        <span className="text-lg font-bold text-brand-400">ETB</span>
       </div>
-    </Card>
+
+      <div className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
+        <TrendingUp className="h-4 w-4" strokeWidth={2.5} />
+        <span>Today&apos;s income: +{formatBirr(todayIncome)} ETB</span>
+      </div>
+
+      <Button
+        variant="gold"
+        size="md"
+        onClick={onWithdraw}
+        disabled={!canWithdraw}
+        className="mt-4 w-full"
+      >
+        <Wallet className="h-4 w-4" strokeWidth={2.5} />
+        Withdraw
+      </Button>
+    </div>
   );
 }

@@ -23,6 +23,25 @@ export interface User {
   createdAt: string;
   /** True when using fallback/mock data (not from Telegram) */
   isMock: boolean;
+  /** Current VIP level (1-7) */
+  vipLevel: number;
+  /** Today's income in Birr */
+  todayIncome: number;
+  /** Number of daily tasks completed today */
+  dailyTasksCompleted: number;
+}
+
+// ─── VIP Plan ─────────────────────────────────────────────────────────
+
+export interface VipPlan {
+  level: number;
+  name: string;
+  /** Required deposit in ETB */
+  deposit: number;
+  /** Daily income in ETB */
+  dailyIncome: number;
+  /** Required daily activities/ads */
+  dailyActivities: number;
 }
 
 // ─── Task ────────────────────────────────────────────────────────────────────

@@ -18,10 +18,10 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
   return (
     <div
       className={cn(
-        "flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 transition-all duration-150",
+        "flex items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 transition-all duration-150",
         isCurrentUser
-          ? "border-purple-500/30 bg-purple-500/5"
-          : "border-dark-600/40 bg-dark-800/60 hover:border-dark-500/60",
+          ? "border-brand-500/40 bg-brand-500/10"
+          : "border-white/5 bg-ink-900/50 hover:border-white/10",
         className
       )}
     >
@@ -31,8 +31,8 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
         ) : (
           <span
             className={cn(
-              "text-xs font-bold",
-              isTop3 ? "text-gold-400" : "text-lavender-300/50"
+              "text-xs font-black",
+              isTop3 ? "text-gold-400" : "text-white/30"
             )}
           >
             {rank}
@@ -50,23 +50,23 @@ export function LeaderboardRow({ entry, isCurrentUser, className }: LeaderboardR
       <div className="flex-1 min-w-0">
         <p
           className={cn(
-            "text-sm font-semibold truncate",
-            isCurrentUser ? "text-purple-400" : "text-white"
+            "text-xs font-bold truncate",
+            isCurrentUser ? "text-brand-400" : "text-white"
           )}
         >
           {user.firstName}
           {isCurrentUser && " (You)"}
         </p>
         {user.username && (
-          <p className="text-xs text-lavender-300/50 truncate">@{user.username}</p>
+          <p className="text-[10px] font-semibold text-white/30 truncate">@{user.username}</p>
         )}
       </div>
 
       <div className="shrink-0 text-right">
-        <span className="text-sm font-bold text-white">
+        <span className="text-xs font-black text-white">
           {formatBirr(balance)}
         </span>
-        <p className="text-[10px] font-medium text-lavender-300/40">Birr</p>
+        <p className="text-[9px] font-bold uppercase tracking-wider text-white/30">Birr</p>
       </div>
     </div>
   );

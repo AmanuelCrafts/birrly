@@ -16,14 +16,14 @@ export function LeaderboardSection({ user }: LeaderboardSectionProps) {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="Leaderboard"
+        title="🏆 Leaderboard"
         subtitle="Top earners this month"
       />
 
-      <div className="space-y-2 px-5 pb-4">
+      <div className="space-y-1.5 px-4 pb-4">
         <CurrentUserRank user={user} rank={currentUserRank} />
 
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {mockLeaderboard.map((entry, i) => (
             <div
               key={entry.user.id}

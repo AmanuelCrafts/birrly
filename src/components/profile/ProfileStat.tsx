@@ -13,13 +13,13 @@ export function ProfileStat({ label, value, icon, className }: ProfileStatProps)
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-1.5 rounded-2xl border border-dark-600/50 bg-dark-800/80 px-3 py-4",
+        "flex flex-col items-center gap-1 rounded-xl border-2 border-white/10 bg-ink-900 px-2 py-4 shadow-[4px_4px_0px_#000000]",
         className
       )}
     >
-      {icon && <div className="text-purple-400">{icon}</div>}
-      <span className="text-lg font-bold text-white">{value}</span>
-      <span className="text-[10px] font-medium text-lavender-300/60">
+      {icon && <div className="text-brand-400">{icon}</div>}
+      <span className="text-base font-black text-white">{value}</span>
+      <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">
         {label}
       </span>
     </div>

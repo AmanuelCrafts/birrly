@@ -6,7 +6,7 @@ export function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("animate-pulse rounded-2xl bg-dark-700", className)}
+      className={cn("animate-pulse rounded-xl border-2 border-white/10 bg-ink-800", className)}
       {...props}
     />
   );
@@ -15,9 +15,9 @@ export function Skeleton({
 /** Skeleton loader for the initial app load */
 export function AppLoader() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-5">
-      <div className="h-14 w-14 rounded-3xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-lg shadow-purple-500/30 animate-float" />
-      <div className="h-4 w-28 rounded-full bg-dark-700 animate-pulse" />
+    <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-6">
+      <div className="h-16 w-16 rounded-2xl border-2 border-brand-500 bg-brand-500/20 animate-bounce-subtle" />
+      <div className="h-5 w-32 rounded-lg border-2 border-white/10 bg-ink-800 animate-pulse" />
     </div>
   );
 }

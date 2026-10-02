@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  themeColor: "#0a0a0f",
+  themeColor: "#0b0f14",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -33,13 +33,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* Telegram Mini Apps SDK */}
         <script src="https://telegram.org/js/telegram-web-app.js" />
-        {/* Monetag SDK — loaded client-side only */}
-        <script
-          src="https://libtl.com/sdk.js"
-          data-zone="11920150"
-          data-sdk="show_11920150"
-          async
-        />
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

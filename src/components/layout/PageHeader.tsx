@@ -9,13 +9,13 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, className, action }: PageHeaderProps) {
   return (
-    <div className={cn("flex items-start justify-between px-5 pt-7 pb-4", className)}>
+    <div className={cn("flex items-start justify-between px-4 pt-6 pb-4", className)}>
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">
+        <h1 className="text-2xl font-black uppercase tracking-tight text-white">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-1 text-sm text-lavender-300">{subtitle}</p>
+          <p className="mt-1 text-sm font-semibold text-white/50">{subtitle}</p>
         )}
       </div>
       {action}

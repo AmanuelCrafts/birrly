@@ -25,7 +25,7 @@ export function UserAvatar({
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-2xl font-bold text-white shadow-lg",
+        "flex items-center justify-center rounded-xl border-2 border-white/20 font-black text-white shrink-0",
         getAvatarColor(id),
         sizeClasses[size],
         className
