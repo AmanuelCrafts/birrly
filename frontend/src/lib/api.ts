@@ -1,5 +1,13 @@
 const API_BASE = "/api";
 
+export interface VipInfo {
+  level: number;
+  name: string;
+  depositAmount: string;
+  dailyIncome: string;
+  dailyTasksRequired: number;
+}
+
 export interface ApiUser {
   id: string;
   telegramId: string;
@@ -9,6 +17,7 @@ export interface ApiUser {
   avatarUrl: string | null;
   status: "ACTIVE" | "SUSPENDED";
   createdAt: string;
+  currentVip: VipInfo | null;
 }
 
 export interface ApiResponse<T> {

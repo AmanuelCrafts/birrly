@@ -4,6 +4,7 @@ import prismaPlugin from "./plugins/prisma.js";
 import sessionPlugin from "./plugins/session.js";
 import rateLimitPlugin from "./plugins/rateLimit.js";
 import authRoutes from "./modules/auth/auth.routes.js";
+import vipRoutes from "./modules/vip/vip.routes.js";
 import { AppError } from "./utils/errors.js";
 import { config } from "./config/index.js";
 
@@ -43,7 +44,6 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // Error handler
   app.setErrorHandler((error: unknown, request, reply) => {
-    // AppError (our custom errors)
     if (error instanceof AppError) {
       return reply.status(error.statusCode).send({
         success: false,
@@ -54,7 +54,6 @@ export async function buildApp(): Promise<FastifyInstance> {
       });
     }
 
-    // Fastify validation errors
     if (error && typeof error === "object" && "validation" in error) {
       const validationError = error as { validation: unknown; message: string };
       return reply.status(400).send({
@@ -84,6 +83,7 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // Register routes
   await app.register(authRoutes);
+  await app.register(vipRoutes);
 
   return app;
 }

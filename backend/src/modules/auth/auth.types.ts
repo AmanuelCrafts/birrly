@@ -1,13 +1,3 @@
-export const telegramAuthSchema = {
-  body: {
-    initData: { type: "string", minLength: 1 },
-  },
-} as const;
-
-export type TelegramAuthBody = {
-  initData: string;
-};
-
 export interface TelegramUser {
   id: string;
   first_name: string;
@@ -15,6 +5,18 @@ export interface TelegramUser {
   username?: string;
   photo_url?: string;
   language_code?: string;
+}
+
+export interface TelegramAuthBody {
+  initData: string;
+}
+
+export interface VipInfo {
+  level: number;
+  name: string;
+  depositAmount: string;
+  dailyIncome: string;
+  dailyTasksRequired: number;
 }
 
 export interface AuthenticatedUser {
@@ -26,4 +28,5 @@ export interface AuthenticatedUser {
   avatarUrl: string | null;
   status: "ACTIVE" | "SUSPENDED";
   createdAt: string;
+  currentVip: VipInfo | null;
 }

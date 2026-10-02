@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { verifyTelegramInitData, extractTelegramUserId } from "../../utils/telegram.js";
 import { UnauthorizedError } from "../../utils/errors.js";
-import type { TelegramUser, AuthenticatedUser } from "./auth.types.js";
+import type { TelegramUser, AuthenticatedUser, VipInfo } from "./auth.types.js";
 
 export class AuthService {
   constructor(private readonly fastify: FastifyInstance) {}
@@ -42,10 +42,10 @@ export class AuthService {
 
     const existingUser = await prisma.user.findUnique({
       where: { telegramId: telegramUser.id },
+      include: { currentVipPlan: true },
     });
 
     if (existingUser) {
-      // Update profile info from Telegram
       const updated = await prisma.user.update({
         where: { id: existingUser.id },
         data: {
@@ -54,11 +54,11 @@ export class AuthService {
           username: telegramUser.username ?? null,
           avatarUrl: telegramUser.photo_url ?? null,
         },
+        include: { currentVipPlan: true },
       });
       return this.toAuthenticatedUser(updated);
     }
 
-    // Create new user
     const created = await prisma.user.create({
       data: {
         telegramId: telegramUser.id,
@@ -67,9 +67,24 @@ export class AuthService {
         username: telegramUser.username ?? null,
         avatarUrl: telegramUser.photo_url ?? null,
       },
+      include: { currentVipPlan: true },
     });
 
     return this.toAuthenticatedUser(created);
+  }
+
+  /**
+   * Gets the authenticated user with VIP info.
+   */
+  async getUserById(userId: string): Promise<AuthenticatedUser | null> {
+    const user = await this.fastify.prisma.user.findUnique({
+      where: { id: userId },
+      include: { currentVipPlan: true },
+    });
+
+    if (!user) return null;
+
+    return this.toAuthenticatedUser(user);
   }
 
   /**
@@ -84,7 +99,24 @@ export class AuthService {
     avatarUrl: string | null;
     status: "ACTIVE" | "SUSPENDED";
     createdAt: Date;
+    currentVipPlan: {
+      level: number;
+      name: string;
+      depositAmount: { toString(): string };
+      dailyIncome: { toString(): string };
+      dailyTasksRequired: number;
+    } | null;
   }): AuthenticatedUser {
+    const currentVip: VipInfo | null = user.currentVipPlan
+      ? {
+          level: user.currentVipPlan.level,
+          name: user.currentVipPlan.name,
+          depositAmount: user.currentVipPlan.depositAmount.toString(),
+          dailyIncome: user.currentVipPlan.dailyIncome.toString(),
+          dailyTasksRequired: user.currentVipPlan.dailyTasksRequired,
+        }
+      : null;
+
     return {
       id: user.id,
       telegramId: user.telegramId,
@@ -94,6 +126,7 @@ export class AuthService {
       avatarUrl: user.avatarUrl,
       status: user.status,
       createdAt: user.createdAt.toISOString(),
+      currentVip,
     };
   }
 }

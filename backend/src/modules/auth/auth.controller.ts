@@ -1,11 +1,11 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "./auth.service.js";
 import type { TelegramAuthBody } from "./auth.types.js";
 
 export class AuthController {
   private readonly service: AuthService;
 
-  constructor(private readonly fastify: FastifyInstance) {
+  constructor(fastify: import("fastify").FastifyInstance) {
     this.service = new AuthService(fastify);
   }
 
@@ -19,13 +19,9 @@ export class AuthController {
   ) {
     const { initData } = request.body;
 
-    // Verify Telegram authentication
     const telegramUser = this.service.verifyTelegramAuth(initData);
-
-    // Find or create user
     const user = await this.service.findOrCreateUser(telegramUser);
 
-    // Check if user is suspended
     if (user.status === "SUSPENDED") {
       return reply.status(403).send({
         success: false,
@@ -36,7 +32,6 @@ export class AuthController {
       });
     }
 
-    // Create session
     request.session.userId = user.id;
 
     return reply.send({
@@ -47,7 +42,7 @@ export class AuthController {
 
   /**
    * GET /api/auth/me
-   * Returns the currently authenticated user.
+   * Returns the currently authenticated user with VIP info.
    */
   async getCurrentUser(request: FastifyRequest, reply: FastifyReply) {
     const userId = request.session.userId;
@@ -62,9 +57,7 @@ export class AuthController {
       });
     }
 
-    const user = await this.fastify.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await this.service.getUserById(userId);
 
     if (!user) {
       return reply.status(401).send({
@@ -78,18 +71,7 @@ export class AuthController {
 
     return reply.send({
       success: true,
-      data: {
-        user: {
-          id: user.id,
-          telegramId: user.telegramId,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          avatarUrl: user.avatarUrl,
-          status: user.status,
-          createdAt: user.createdAt.toISOString(),
-        },
-      },
+      data: { user },
     });
   }
 
