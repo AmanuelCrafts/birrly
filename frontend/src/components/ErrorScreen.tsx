@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 interface ErrorScreenProps {
   message: string;
   onRetry?: () => void;
 }
 
 export function ErrorScreen({ message, onRetry }: ErrorScreenProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 bg-ink-950 px-6">
       <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-coral-500/20 text-4xl">
@@ -18,6 +22,12 @@ export function ErrorScreen({ message, onRetry }: ErrorScreenProps) {
           Try Again
         </button>
       )}
+      <button
+        onClick={() => navigate("/debug")}
+        className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white/50 transition-colors hover:bg-white/10 hover:text-white/70 cursor-pointer"
+      >
+        🔍 Debug Info
+      </button>
     </div>
   );
 }
