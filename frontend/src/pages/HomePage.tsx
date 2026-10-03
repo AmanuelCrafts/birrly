@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { VipStatusCard } from "../components/VipStatusCard";
 import { NoVipCard } from "../components/NoVipCard";
 
 export function HomePage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   if (!user) return null;
 
@@ -49,6 +51,14 @@ export function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Debug Link */}
+      <button
+        onClick={() => navigate("/debug")}
+        className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-bold text-white/40 transition-colors hover:bg-white/10 hover:text-white/60 cursor-pointer"
+      >
+        🔍 Debug Info
+      </button>
     </div>
   );
 }

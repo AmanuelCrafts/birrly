@@ -5,6 +5,7 @@ import { ErrorScreen } from "./components/ErrorScreen";
 import { OutsideTelegramScreen } from "./components/OutsideTelegramScreen";
 import { HomePage } from "./pages/HomePage";
 import { PlansPage } from "./pages/PlansPage";
+import { DebugPage } from "./pages/DebugPage";
 
 function AppContent() {
   const { state, error, retry } = useAuth();
@@ -26,6 +27,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/plans" element={<PlansPage />} />
+        <Route path="/debug" element={<DebugPage />} />
       </Routes>
     </BrowserRouter>
   );
