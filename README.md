@@ -37,20 +37,55 @@ birrly/
 
 ## Prerequisites
 
-- Node.js 20+
 - A [Neon](https://neon.tech) Postgres database (free tier works)
 - A Telegram bot (get token from [@BotFather](https://t.me/BotFather))
 
-## Setup
+## Quick Deploy (no local setup)
+
+### Option 1: Railway (Recommended)
+
+1. Push this repo to GitHub
+2. Go to [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
+3. Select your repo — Railway auto-detects `railway.json`
+4. Add environment variables in the Railway dashboard:
+   - `DATABASE_URL` — your Neon pooled connection string
+   - `DIRECT_URL` — your Neon direct connection string
+   - `TELEGRAM_BOT_TOKEN` — from @BotFather
+   - `SESSION_SECRET` — generate with `openssl rand -hex 32`
+   - `FRONTEND_URL` — your Vercel frontend URL
+   - `NODE_ENV` = `production`
+5. Railway automatically runs migrations + seed on deploy
+
+### Option 2: Render
+
+1. Push this repo to GitHub
+2. Go to [render.com](https://render.com) → **New** → **Web Service**
+3. Select your repo — Render auto-detects `render.yaml`
+4. Add the same environment variables
+5. Render runs migrations + seed on deploy
+
+### Option 3: Docker (any host)
+
+```bash
+cd backend
+docker build -t birrly-backend .
+docker run -p 3001:3001 \
+  -e DATABASE_URL="postgresql://..." \
+  -e DIRECT_URL="postgresql://..." \
+  -e TELEGRAM_BOT_TOKEN="..." \
+  -e SESSION_SECRET="..." \
+  -e FRONTEND_URL="https://your-app.vercel.app" \
+  -e NODE_ENV=production \
+  birrly-backend
+```
+
+## Local Development
 
 ### 1. Create a Neon Postgres Database
 
 1. Go to [neon.tech](https://neon.tech) and sign up / log in
 2. Create a new project (e.g., `birrly`)
 3. Copy the **connection string** from the dashboard
-4. You'll need two URLs:
-   - **Pooled connection** (for the app) — uses the pooler endpoint
-   - **Direct connection** (for migrations) — uses the direct endpoint
 
 ### 2. Clone and install
 
@@ -69,18 +104,10 @@ cp backend/.env.example backend/.env
 Edit `backend/.env`:
 
 ```env
-# Neon Postgres — pooled connection (for the app)
 DATABASE_URL="postgresql://user:password@ep-cool-name-region.aws.neon.tech/birrly?sslmode=require"
-
-# Neon Postgres — direct connection (for Prisma migrations)
 DIRECT_URL="postgresql://user:password@ep-cool-name-region.aws.neon.tech/birrly?sslmode=require"
-
-# Telegram bot token from @BotFather
 TELEGRAM_BOT_TOKEN="your-bot-token"
-
-# Generate with: openssl rand -hex 32
 SESSION_SECRET="your-secret"
-
 FRONTEND_URL="http://localhost:5173"
 NODE_ENV="development"
 PORT="3001"
@@ -91,26 +118,14 @@ PORT="3001"
 ```bash
 cd backend
 npx prisma migrate dev --name init
-```
-
-This creates the `users` and `vip_plans` tables in your Neon database.
-
-### 5. Seed VIP plans
-
-```bash
 npx prisma seed
 ```
 
-### 6. Start development servers
+### 5. Start development servers
 
 ```bash
-# From the project root
 npm run dev
 ```
-
-This starts both:
-- Backend on http://localhost:3001
-- Frontend on http://localhost:5173
 
 ## Telegram Bot Setup
 
@@ -119,18 +134,6 @@ This starts both:
 3. Copy the bot token → put it in `backend/.env` as `TELEGRAM_BOT_TOKEN`
 4. Send `/newapp` to BotFather to create a Mini App
 5. Set the Mini App URL to your frontend URL (use ngrok for local dev)
-
-### Local development with ngrok
-
-```bash
-# Install ngrok if you haven't
-npm install -g ngrok
-
-# Expose your frontend
-ngrok http 5173
-
-# Use the https URL as your Mini App URL in BotFather
-```
 
 ## API Endpoints
 
@@ -142,14 +145,6 @@ ngrok http 5173
 | GET | `/api/vip/plans` | Get all active VIP plans |
 | GET | `/api/vip/current` | Get user's current VIP plan |
 | GET | `/api/health` | Health check |
-
-## Authentication Flow
-
-```
-Telegram → Open Mini App → WebApp SDK init → Send initData to backend
-→ Backend verifies HMAC → Find/create user → Create session cookie
-→ Return user → Frontend loads Home page
-```
 
 ## Security
 
