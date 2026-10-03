@@ -1,18 +1,20 @@
 # Birrly — Telegram Mini App
 
-A gamified rewards Telegram Mini App. Phase 1: Authentication + User System.
+A gamified rewards Telegram Mini App.
 
 ## Architecture
 
 ```
 birrly/
-├── backend/          # Fastify + TypeScript + Prisma + PostgreSQL
+├── backend/          # Fastify + TypeScript + Prisma + Neon Postgres
 │   ├── prisma/
 │   │   └── schema.prisma
 │   ├── src/
 │   │   ├── config/
 │   │   ├── middleware/
-│   │   ├── modules/auth/
+│   │   ├── modules/
+│   │   │   ├── auth/
+│   │   │   └── vip/
 │   │   ├── plugins/
 │   │   ├── utils/
 │   │   ├── app.ts
@@ -36,24 +38,26 @@ birrly/
 ## Prerequisites
 
 - Node.js 20+
-- PostgreSQL 14+
+- A [Neon](https://neon.tech) Postgres database (free tier works)
 - A Telegram bot (get token from [@BotFather](https://t.me/BotFather))
 
 ## Setup
 
-### 1. Clone and install
+### 1. Create a Neon Postgres Database
+
+1. Go to [neon.tech](https://neon.tech) and sign up / log in
+2. Create a new project (e.g., `birrly`)
+3. Copy the **connection string** from the dashboard
+4. You'll need two URLs:
+   - **Pooled connection** (for the app) — uses the pooler endpoint
+   - **Direct connection** (for migrations) — uses the direct endpoint
+
+### 2. Clone and install
 
 ```bash
 git clone <repo-url>
 cd birrly
 npm install
-```
-
-### 2. Set up PostgreSQL
-
-```bash
-# Create database
-createdb birrly
 ```
 
 ### 3. Configure environment variables
@@ -65,9 +69,18 @@ cp backend/.env.example backend/.env
 Edit `backend/.env`:
 
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/birrly?schema=public"
-TELEGRAM_BOT_TOKEN="your-bot-token-from-botfather"
-SESSION_SECRET="generate-with-openssl-rand-hex-32"
+# Neon Postgres — pooled connection (for the app)
+DATABASE_URL="postgresql://user:password@ep-cool-name-region.aws.neon.tech/birrly?sslmode=require"
+
+# Neon Postgres — direct connection (for Prisma migrations)
+DIRECT_URL="postgresql://user:password@ep-cool-name-region.aws.neon.tech/birrly?sslmode=require"
+
+# Telegram bot token from @BotFather
+TELEGRAM_BOT_TOKEN="your-bot-token"
+
+# Generate with: openssl rand -hex 32
+SESSION_SECRET="your-secret"
+
 FRONTEND_URL="http://localhost:5173"
 NODE_ENV="development"
 PORT="3001"
@@ -76,14 +89,22 @@ PORT="3001"
 ### 4. Run Prisma migrations
 
 ```bash
-npm run db:migrate
+cd backend
+npx prisma migrate dev --name init
 ```
 
-This creates the `users` table with proper indexes and constraints.
+This creates the `users` and `vip_plans` tables in your Neon database.
 
-### 5. Start development servers
+### 5. Seed VIP plans
 
 ```bash
+npx prisma seed
+```
+
+### 6. Start development servers
+
+```bash
+# From the project root
 npm run dev
 ```
 
@@ -95,7 +116,7 @@ This starts both:
 
 1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
 2. Send `/newbot` and follow the prompts
-3. Copy the bot token and put it in `backend/.env` as `TELEGRAM_BOT_TOKEN`
+3. Copy the bot token → put it in `backend/.env` as `TELEGRAM_BOT_TOKEN`
 4. Send `/newapp` to BotFather to create a Mini App
 5. Set the Mini App URL to your frontend URL (use ngrok for local dev)
 
@@ -118,6 +139,8 @@ ngrok http 5173
 | POST | `/api/auth/telegram` | Authenticate with Telegram init data |
 | GET | `/api/auth/me` | Get current authenticated user |
 | POST | `/api/auth/logout` | Destroy session |
+| GET | `/api/vip/plans` | Get all active VIP plans |
+| GET | `/api/vip/current` | Get user's current VIP plan |
 | GET | `/api/health` | Health check |
 
 ## Authentication Flow
@@ -137,6 +160,7 @@ Telegram → Open Mini App → WebApp SDK init → Send initData to backend
 - Input validation with Zod
 - CORS restricted to frontend URL
 - Timing-safe hash comparison
+- Neon Postgres with SSL required
 
 ## Scripts
 
@@ -147,3 +171,4 @@ Telegram → Open Mini App → WebApp SDK init → Send initData to backend
 | `npm run db:migrate` | Run Prisma migrations |
 | `npm run db:studio` | Open Prisma Studio |
 | `npm run db:generate` | Generate Prisma client |
+| `npm run db:seed` | Seed VIP plans |

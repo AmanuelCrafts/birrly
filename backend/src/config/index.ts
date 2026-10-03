@@ -22,6 +22,7 @@ export const config = {
   nodeEnv: getOptionalEnvVar("NODE_ENV", "development"),
   port: Number(getOptionalEnvVar("PORT", "3001")),
   databaseUrl: getEnvVar("DATABASE_URL"),
+  directUrl: process.env.DIRECT_URL || getEnvVar("DATABASE_URL"),
   telegramBotToken: getEnvVar("TELEGRAM_BOT_TOKEN"),
   sessionSecret: getEnvVar("SESSION_SECRET"),
   frontendUrl: getOptionalEnvVar("FRONTEND_URL", "http://localhost:5173"),
