@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "https://birrly-backend.onrender.com",
+        target: "https://birrly.onrender.com",
         changeOrigin: true,
       },
     },
