@@ -1,4 +1,4 @@
-const API_BASE = "/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 export interface VipInfo {
   level: number;
@@ -47,18 +47,18 @@ async function apiFetch<T>(
 }
 
 export async function telegramAuth(initData: string): Promise<ApiResponse<{ user: ApiUser }>> {
-  return apiFetch<{ user: ApiUser }>("/auth/telegram", {
+  return apiFetch<{ user: ApiUser }>("/api/auth/telegram", {
     method: "POST",
     body: JSON.stringify({ initData }),
   });
 }
 
 export async function getCurrentUser(): Promise<ApiResponse<{ user: ApiUser }>> {
-  return apiFetch<{ user: ApiUser }>("/auth/me");
+  return apiFetch<{ user: ApiUser }>("/api/auth/me");
 }
 
 export async function logout(): Promise<ApiResponse<{ message: string }>> {
-  return apiFetch<{ message: string }>("/auth/logout", {
+  return apiFetch<{ message: string }>("/api/auth/logout", {
     method: "POST",
   });
 }
