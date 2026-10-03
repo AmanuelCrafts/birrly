@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getTelegramWebApp, isInsideTelegram, getTelegramInitData } from "../lib/telegram";
-import { getCurrentUser, getVipPlans } from "../lib/api";
-import type { VipPlan } from "../lib/vip";
+import { getVipPlans } from "../lib/vip";
 
 interface DebugInfo {
   insideTelegram: boolean;
@@ -93,7 +92,7 @@ export function DebugPage() {
     gatherDebugInfo();
   }, [state, user]);
 
-  if (loading) {
+  if (loading || !debug) {
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-ink-950">
         <div className="animate-bounce-subtle text-2xl">🔍</div>
@@ -113,41 +112,41 @@ export function DebugPage() {
       <div className="mt-6 space-y-3">
         {/* Telegram Environment */}
         <DebugSection title="Telegram Environment">
-          <DebugRow label="Inside Telegram" value={debug?.insideTelegram ? "Yes" : "No"} ok={debug?.insideTelegram} />
-          <DebugRow label="Init Data Present" value={debug?.initDataPresent ? "Yes" : "No"} ok={debug?.initDataPresent} />
-          <DebugRow label="Init Data Length" value={String(debug?.initDataLength ?? 0)} />
-          <DebugRow label="Color Scheme" value={debug?.colorScheme ?? "N/A"} />
-          <DebugRow label="Is Expanded" value={debug?.isExpanded !== null ? String(debug.isExpanded) : "N/A"} />
-          <DebugRow label="Telegram User" value={debug?.telegramUser ?? "N/A"} />
+          <DebugRow label="Inside Telegram" value={debug.insideTelegram ? "Yes" : "No"} ok={debug.insideTelegram} />
+          <DebugRow label="Init Data Present" value={debug.initDataPresent ? "Yes" : "No"} ok={debug.initDataPresent} />
+          <DebugRow label="Init Data Length" value={String(debug.initDataLength)} />
+          <DebugRow label="Color Scheme" value={debug.colorScheme ?? "N/A"} />
+          <DebugRow label="Is Expanded" value={debug.isExpanded !== null ? String(debug.isExpanded) : "N/A"} />
+          <DebugRow label="Telegram User" value={debug.telegramUser ?? "N/A"} />
         </DebugSection>
 
         {/* Authentication */}
         <DebugSection title="Authentication">
-          <DebugRow label="Auth State" value={debug?.authState ?? "N/A"} ok={debug?.authState === "authenticated"} />
-          <DebugRow label="User" value={debug?.user ?? "N/A"} />
+          <DebugRow label="Auth State" value={debug.authState} ok={debug.authState === "authenticated"} />
+          <DebugRow label="User" value={debug.user ?? "N/A"} />
           {error && <DebugRow label="Error" value={error} ok={false} />}
         </DebugSection>
 
         {/* Backend Connectivity */}
         <DebugSection title="Backend">
-          <DebugRow label="API Base URL" value={debug?.apiBase ?? "N/A"} />
+          <DebugRow label="API Base URL" value={debug.apiBase} />
           <DebugRow
             label="Backend Reachable"
-            value={debug?.backendReachable === true ? "Yes" : debug?.backendReachable === false ? "No" : "Unknown"}
-            ok={debug?.backendReachable}
+            value={debug.backendReachable === true ? "Yes" : debug.backendReachable === false ? "No" : "Unknown"}
+            ok={debug.backendReachable === true}
           />
-          {debug?.backendError && <DebugRow label="Backend Error" value={debug.backendError} ok={false} />}
+          {debug.backendError && <DebugRow label="Backend Error" value={debug.backendError} ok={false} />}
           <DebugRow
             label="VIP Plans"
-            value={debug?.vipPlansCount !== null ? `${debug.vipPlansCount} plans loaded` : "Not loaded"}
-            ok={debug?.vipPlansCount !== null}
+            value={debug.vipPlansCount !== null ? `${debug.vipPlansCount} plans loaded` : "Not loaded"}
+            ok={debug.vipPlansCount !== null}
           />
-          {debug?.vipPlansError && <DebugRow label="VIP Plans Error" value={debug.vipPlansError} ok={false} />}
+          {debug.vipPlansError && <DebugRow label="VIP Plans Error" value={debug.vipPlansError} ok={false} />}
         </DebugSection>
 
         {/* Timestamp */}
         <DebugSection title="Session">
-          <DebugRow label="Timestamp" value={debug?.timestamp ?? "N/A"} />
+          <DebugRow label="Timestamp" value={debug.timestamp} />
         </DebugSection>
       </div>
     </div>
