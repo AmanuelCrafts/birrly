@@ -24,22 +24,22 @@ function AppContent() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/plans" element={<PlansPage />} />
-        <Route path="/debug" element={<DebugPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/plans" element={<PlansPage />} />
+      <Route path="/debug" element={<DebugPage />} />
+    </Routes>
   );
 }
 
 export default function App() {
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ErrorBoundary>
+    <BrowserRouter>
+      <ErrorBoundary>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 }
